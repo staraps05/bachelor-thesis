@@ -4,7 +4,7 @@
 # Inputs:  Data/processed/scoring_input.parquet, Data/colab/finbert_scores.csv, Data/colab/fingpt_scores.csv, Data/Loughran-McDonald_MasterDictionary_*.csv, Data/processed/features_lm.parquet, Data/crsp_daily_prices.csv, Data/F-F_Research_Data_Factors_daily.csv
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/2_sentiment/15 and pipeline/2_sentiment/sentiment_aggregation.py via importlib.
+# - Loads 2_sentiment/15 and 2_sentiment/sentiment_aggregation.py via importlib.
 # - Gate: regenerated LM scores must re-aggregate to features_lm.parquet bit-exactly.
 
 import hashlib

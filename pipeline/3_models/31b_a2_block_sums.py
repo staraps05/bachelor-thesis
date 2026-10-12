@@ -3,7 +3,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/3_models/30 and pipeline/3_models/17 via importlib (fit config, reference R2, blocks).
+# - Loads 3_models/30 and 3_models/17 via importlib (fit config, reference R2, blocks).
 # - Gate: A2's ten per-seed pooled R2 must match the reference within GATE_TOL.
 # - The three block masks must partition the 35 inputs exactly.
 

@@ -3,8 +3,8 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet, Data/processed/numbers_check/tableC2_ridge_rows.csv, Data/processed/numbers_check/tableC3_ridge_alpha.csv, Data/processed/numbers_check/tableC4_ridge_decomp.csv
 # Outputs: Data/processed/numbers_check/ tableC2_ridge_rows_singlelag.csv, tableC3_ridge_alpha_singlelag.csv, tableC3_preregistered_valmse_singlelag.csv, tableC4_ridge_decomp_singlelag.csv
 # Notes:
-# - Loads pipeline/5_tables/39 (run_grid, weekly_e2, grids) and 27 (single_lag_frame) by importlib.
-# - Gate 1: the double-lag re-run must reproduce pipeline/5_tables/39's CSVs (1e-9, alphas exact).
+# - Loads 5_tables/39 (run_grid, weekly_e2, grids) and 27 (single_lag_frame) by importlib.
+# - Gate 1: the double-lag re-run must reproduce 5_tables/39's CSVs (1e-9, alphas exact).
 # - Gate 2: single-lag frame has 157,277 rows, 78,056 test rows, had_news share 0.6620.
 
 import importlib.util

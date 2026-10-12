@@ -5,7 +5,7 @@
 # Notes:
 # - Verification script: checks only; writes nothing to Data/
 # - Loads pipeline/3_models/27 via importlib (single_lag_frame, fit configuration).
-# - Check 2 stops unless regenerated R2 matches the pipeline/3_models/26 log (2e-4 pp); see 43.
+# - Check 2 stops unless regenerated R2 matches the 3_models/26 log (2e-4 pp); see 43.
 
 import hashlib
 import importlib.util
@@ -128,10 +128,10 @@ def main() -> int:
     # ---- check 2: bias vs skill ----
     print("\n=== CHECK 2: bias vs skill decomposition (single-lag PRIMARY, "
           "seed 42) ===")
-    print("  [INFO] file: pipeline/26 wrote NO predictions parquet (in-memory "
+    print("  [INFO] file: pipeline/3_models/26 wrote NO predictions parquet (in-memory "
           "by design). Regenerating seed-42 single-lag predictions with the "
           "identical procedure; verification below requires all four arms' "
-          "pooled R2 to match pipeline/26's logged values before use.")
+          "pooled R2 to match pipeline/3_models/26's logged values before use.")
     df = single_lag_frame()
     ARMS = {
         "A0_structured": list(INPUTS_30),
@@ -177,11 +177,11 @@ def main() -> int:
         pool = (1.0 - float(((preds[TARGET_FWD] - preds["yhat"]) ** 2).sum())
                 / float((preds[TARGET_FWD] ** 2).sum())) * 100
         if abs(pool - C26_SEED42[arm]) > 2e-4:
-            stop(f"{arm}: regenerated pooled R2 {pool:+.4f}% != pipeline/26's "
+            stop(f"{arm}: regenerated pooled R2 {pool:+.4f}% != pipeline/3_models/26's "
                  f"logged {C26_SEED42[arm]:+.4f}% - regeneration invalid")
         preds_by_arm[arm] = preds
         print(f"  [PASS] {arm:<14} regenerated pooled R2 {pool:+.4f}% == "
-              f"pipeline/26 seed-42 value")
+              f"pipeline/3_models/26 seed-42 value")
 
     print(f"\n  decomposition on pooled 2021-23 test rows "
           f"(n = {len(preds_by_arm['A0_structured']):,}):")

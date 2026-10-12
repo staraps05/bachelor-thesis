@@ -4,7 +4,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/3_models/30 via importlib (merge_frame, fit config, per-seed reference R2).
+# - Loads 3_models/30 via importlib (merge_frame, fit config, per-seed reference R2).
 # - Gate: A2's ten per-seed pooled R2 must match the reference within GATE_TOL.
 
 import importlib.util

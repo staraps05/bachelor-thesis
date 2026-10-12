@@ -3,7 +3,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/numbers_check/ tableC2_covered.csv, tableC2_covered_perseed.csv, tableC2_covered_dm060.csv
 # Notes:
-# - Loads pipeline/3_models/27 (single_lag_frame, fit_all, dm_test) via importlib; sets ARMS_DEF.
+# - Loads 3_models/27 (single_lag_frame, fit_all, dm_test) via importlib; sets ARMS_DEF.
 # - No reproduction gate (different row set); stops if any seed's |A0 R2| exceeds 0.05.
 # - DM tests run at the 0.60 threshold only; 0.60 is the primary row.
 

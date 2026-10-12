@@ -3,8 +3,8 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/predictions_A0_structured.parquet, Data/processed/predictions_A1_lm.parquet, Data/processed/predictions_A2_finbert.parquet, Data/processed/predictions_A3_fingpt.parquet
 # Notes:
-# - Loads pipeline/3_models/18 via importlib (fit config); loaded by pipeline/3_models/20, verification/25.
-# - A0 must reproduce pipeline/3_models/18 (hard-coded pooled R^2, prediction SHA256) or it stops.
+# - Loads 3_models/18 via importlib (fit config); loaded by 3_models/20, verification/25.
+# - A0 must reproduce 3_models/18 (hard-coded pooled R^2, prediction SHA256) or it stops.
 # - All four input SHA256s/shapes checked; stops on mismatch or a write-protected output.
 
 import hashlib

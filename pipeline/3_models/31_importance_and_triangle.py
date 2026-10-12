@@ -3,7 +3,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet, Data/processed/scoring_input.parquet, Data/Loughran-McDonald_MasterDictionary_*.csv, Data/colab/finbert_scores.csv, Data/colab/fingpt_scores.csv
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/3_models/30 and pipeline/3_models/17 via importlib (fit config, reference R2, blocks).
+# - Loads 3_models/30 and 3_models/17 via importlib (fit config, reference R2, blocks).
 # - Gate: every seed x arm pooled R2 must match the reference within GATE_TOL, else stop.
 # - Triangle values are compared with the recorded ones (Pearson/Spearman, row-set labels)
 

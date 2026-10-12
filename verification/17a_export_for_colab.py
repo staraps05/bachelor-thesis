@@ -4,8 +4,8 @@
 # Outputs: prints only
 # Notes:
 # - Verification script: checks only; writes nothing to Data/
-# - EXPORT_SHA and EXPORT_ROWS (796,038) were recorded when pipeline/2_sentiment/16a wrote the file.
-# - Exits with STOP on a missing file, SHA or row-count mismatch; then run pipeline/2_sentiment/colab/17b.
+# - EXPORT_SHA and EXPORT_ROWS (796,038) recorded when 2_sentiment/16a wrote the file.
+# - Exits with STOP on a missing file, SHA or row-count mismatch; then run colab/17b.
 
 import hashlib
 import sys
@@ -19,10 +19,10 @@ EXPORT_ROWS = 796_038
 
 def main() -> int:
     if not EXPORT_FILE.exists():
-        sys.exit(f"STOP: {EXPORT_FILE} missing - re-run pipeline/16a_export_for_colab.py")
+        sys.exit(f"STOP: {EXPORT_FILE} missing - re-run pipeline/2_sentiment/16a_export_for_colab.py")
     sha = hashlib.sha256(EXPORT_FILE.read_bytes()).hexdigest()
     if sha != EXPORT_SHA:
-        sys.exit(f"STOP: export SHA mismatch ({sha}) - re-run pipeline/16a and "
+        sys.exit(f"STOP: export SHA mismatch ({sha}) - re-run pipeline/2_sentiment/16a and "
                  f"re-verify the chain")
     n = sum(1 for _ in open(EXPORT_FILE)) - 1
     if n != EXPORT_ROWS:
@@ -34,7 +34,7 @@ def main() -> int:
           "finbert_input.csv - no re-upload.")
     print("Run Colab/17b_score_fingpt.ipynb (outputs go to MyDrive/"
           "thesis_fingpt/), download fingpt_scores.csv into Data/colab/, "
-          "then run pipeline/17c.")
+          "then run pipeline/2_sentiment/17c.")
     return 0
 
 

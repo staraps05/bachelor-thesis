@@ -5,7 +5,7 @@
 # Notes:
 # - Loads pipeline/1_data_build/08 via importlib for week_anchor_map.
 # - Reads the 22 GB raw FNSPID file for the midnight share; this step dominates runtime.
-# - scoring_input.parquet is checked against the SHA256 recorded in pipeline/2_sentiment/15.
+# - scoring_input.parquet is checked against the SHA256 recorded in 2_sentiment/15.
 
 import hashlib
 import html

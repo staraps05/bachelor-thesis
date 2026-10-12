@@ -3,7 +3,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/3_models/19 via importlib; loaded by 21, 22, 26, 27, 30, 39, 41, verification/23
+# - Loads 3_models/19 via importlib; loaded by 21, 22, 26, 27, 30, 39, 41, verification/23
 # - Defines AMENDMENT = {"colsample_bytree": 1.0} (sole FIXED_PARAMS change); SEEDS 42-51.
 # - Stops on input SHA256/shape mismatch or if any seed's A0 has |pooled R^2| > 0.05.
 

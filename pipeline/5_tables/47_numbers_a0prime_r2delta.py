@@ -3,9 +3,9 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/numbers_check/ a0prime_r2delta_perseed.csv, a0prime_r2delta_splits.csv, a0prime_r2delta_summary.csv
 # Notes:
-# - Loads pipeline/3_models/27 (single_lag_frame, fit config) and 30 (gate table) via importlib.
+# - Loads 3_models/27 (single_lag_frame, fit config) and 30 (gate table) via importlib.
 # - Split counts when the truncated booster (first best_iteration+1 trees) uses had_news.
-# - Gate: each seed's A0 pooled R2 must match the pipeline/3_models/26 value within GATE_TOL.
+# - Gate: each seed's A0 pooled R2 must match the 3_models/26 value within GATE_TOL.
 
 import importlib.util
 import sys

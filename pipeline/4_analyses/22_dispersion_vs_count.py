@@ -4,7 +4,7 @@
 # Inputs:  Data/processed/scoring_input.parquet, Data/processed/scoring_input_coverage.csv, Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/3_models/20 via importlib (merge_frame SHA-checks inputs, TARGET_FWD, YEARS).
+# - Loads 3_models/20 via importlib (merge_frame SHA-checks inputs, TARGET_FWD, YEARS).
 # - Stored count is recomputed from scoring_input.parquet and must match, else it stops.
 
 import hashlib

@@ -3,7 +3,7 @@
 # Inputs:  Data/Loughran-McDonald_MasterDictionary_*.csv (last match by name), Data/processed/scoring_input.parquet, Data/processed/scoring_input_coverage.csv, Data/processed/panel_final.parquet
 # Outputs: Data/processed/features_lm.parquet
 # Notes:
-# - Aggregation runs through pipeline/2_sentiment/sentiment_aggregation.py; its unit tests run first.
+# - Aggregation runs through sentiment_aggregation.py (same folder); unit tests run first.
 # - Scoring-input SHA256 and row count must match hard-coded constants; stops on mismatch.
 # - Output is write-protected only when all checks pass; stops if a protected one exists.
 import hashlib
@@ -15,6 +15,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import sentiment_aggregation as sagg
 
 REPO_ROOT = Path(__file__).resolve().parents[2]

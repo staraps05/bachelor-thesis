@@ -3,9 +3,9 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet, Data/processed/scoring_input_coverage.csv, Data/processed/numbers_check/tableC5_modelfree.csv, Data/processed/numbers_check/tableC7_count_corr.csv
 # Outputs: Data/processed/numbers_check/ tableC5_modelfree_singlelag.csv
 # Notes:
-# - Loads pipeline/5_tables/41 (clustered_ols, dm_test, merge_frame) and pipeline/3_models/27 via importlib.
+# - Loads 5_tables/41 (clustered_ols, dm_test, merge_frame) and 3_models/27 via importlib.
 # - Gate 1: double-lag C.5 and C.7 must match the recorded CSVs within 1e-9.
-# - Gate 2: single-lag frame matches pipeline/3_models/26 rows, test rows and had_news share.
+# - Gate 2: single-lag frame matches 3_models/26 rows, test rows and had_news share.
 
 import importlib.util
 import sys

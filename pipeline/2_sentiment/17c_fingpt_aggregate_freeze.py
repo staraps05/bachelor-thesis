@@ -3,7 +3,7 @@
 # Inputs:  Data/colab/fingpt_scores.csv, Data/processed/scoring_input.parquet, Data/processed/panel_final.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/colab/finbert_scores.csv, Data/Loughran-McDonald_MasterDictionary_1993-2025.csv
 # Outputs: Data/processed/features_fingpt.parquet
 # Notes:
-# - Imports pipeline/2_sentiment/sentiment_aggregation.py (unit tests first); mirrors pipeline/2_sentiment/16c.
+# - Imports sentiment_aggregation.py (same folder, unit tests first); mirrors 16c.
 # - SHA256 gates on scoring_input, features_lm, features_finbert; failed hard gate stops.
 # - Output is written even on a soft-check failure (exit 1); read-only only on full pass.
 
@@ -16,6 +16,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import sentiment_aggregation as sagg
 
 REPO_ROOT = Path(__file__).resolve().parents[2]

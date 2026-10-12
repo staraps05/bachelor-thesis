@@ -3,8 +3,8 @@
 # Inputs:  Data/processed/scoring_input.parquet, Data/colab/finbert_scores.csv, Data/colab/fingpt_scores.csv, Data/Loughran-McDonald_MasterDictionary_*.csv, Data/processed/features_lm.parquet, Data/crsp_daily_prices.csv, Data/F-F_Research_Data_Factors_daily.csv
 # Outputs: Data/processed/numbers_check/ tableC6_persistence.csv
 # Notes:
-# - Loads pipeline/2_sentiment/15 (TOKEN_RE, DICT_GLOB) and sentiment_aggregation.py via importlib.
-# - Input SHA256s checked (pipeline/4_analyses/29); stops unless LM regeneration matches features_lm.
+# - Loads 2_sentiment/15 (TOKEN_RE, DICT_GLOB) and sentiment_aggregation.py via importlib.
+# - Input SHA256s as in 4_analyses/29; stops unless LM regeneration matches features_lm.
 # - Univariate daily test: no weekly lag structure and no structured baseline.
 
 import hashlib

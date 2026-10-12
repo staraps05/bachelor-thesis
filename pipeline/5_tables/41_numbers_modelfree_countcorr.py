@@ -3,8 +3,8 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet, Data/processed/scoring_input_coverage.csv, Data/processed/scoring_input.parquet
 # Outputs: Data/processed/numbers_check/ tableC5_modelfree.csv, tableC7_count_corr.csv
 # Notes:
-# - Loads pipeline/3_models/20 via importlib; loaded by pipeline/5_tables/46 (clustered_ols, constants).
-# - Double-lag pairing as in pipeline/4_analyses/21-22; pipeline/5_tables/46 is the single-lag counterpart.
+# - Loads 3_models/20 via importlib; loaded by 5_tables/46 (clustered_ols, constants).
+# - Double-lag pairing as in 4_analyses/21-22; 5_tables/46 is the single-lag counterpart.
 # - Deterministic, no seeds; stops if headline counts are missing on had_news == 1 rows.
 
 import hashlib

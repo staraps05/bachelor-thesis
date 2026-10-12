@@ -4,8 +4,8 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/3_models/20 via importlib (merge_frame with SHA checks, dm_test, fit config).
-# - Gate: A0 must reproduce the pipeline/3_models/20 per-seed pooled R2 within 2e-4 pp, else stop.
+# - Loads 3_models/20 via importlib (merge_frame with SHA checks, dm_test, fit config).
+# - Gate: A0 must reproduce the 3_models/20 per-seed pooled R2 within 2e-4 pp, else stop.
 
 import importlib.util
 import sys

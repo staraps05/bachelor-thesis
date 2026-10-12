@@ -3,7 +3,7 @@
 # Inputs:  none
 # Outputs: prints only (unit-test results when run as a script)
 # Notes:
-# - Imported by pipeline/2_sentiment/15, 16c, 17c; loaded via importlib by 29, 42; import-safe.
+# - Imported by 2_sentiment/15, 16c, 17c; loaded via importlib by 29, 42; import-safe.
 # - Run as a script it executes the unit tests; scorers call run_unit_tests() first.
 # - Any change here changes every arm's features; near-identical-pair test guards kurt.
 

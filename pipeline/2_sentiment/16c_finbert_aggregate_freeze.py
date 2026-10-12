@@ -4,7 +4,7 @@
 # Outputs: Data/processed/features_finbert.parquet
 # Notes:
 # - Gates: exactly 796,038 score rows; SHA256 of scoring_input and features_lm checked.
-# - Imports pipeline/2_sentiment/sentiment_aggregation.py (unit tests first); had_news must equal LM.
+# - Imports sentiment_aggregation.py (same folder, unit tests first); had_news == LM.
 # - The output is write-protected only when every check passes.
 
 import hashlib
@@ -16,6 +16,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import sentiment_aggregation as sagg
 
 REPO_ROOT = Path(__file__).resolve().parents[2]

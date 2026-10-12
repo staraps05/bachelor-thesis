@@ -3,7 +3,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/3_models/20 via importlib; loaded by pipeline/5_tables/34-38, 40, 43-48, verification/28.
+# - Loads 3_models/20 via importlib; loaded by 5_tables/34-38, 40, 43-48, verification/28.
 # - Gate: per-seed |A0 pooled R2| <= 0.05 or stop (A0 need not match the full panel).
 # - Full-panel reference values from verification/audit_block9_10/c5_code26_output.log.
 

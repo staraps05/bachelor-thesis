@@ -3,8 +3,8 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/numbers_check/ table42_importance_perfeature.csv, table42_block_sums.csv, table42_sentiment_members.csv
 # Notes:
-# - Loads pipeline/3_models/27 (frame, fit config), 30 (gate table) and 17 (blocks) via importlib.
-# - Gate: 20 A0 and A2 per-seed pooled R2 cells must match the pipeline/3_models/26 log (GATE_TOL).
+# - Loads 3_models/27 (frame, fit config), 30 (gate table) and 17 (blocks) via importlib.
+# - Gate: 20 A0 and A2 per-seed pooled R2 cells must match the 3_models/26 log (GATE_TOL).
 # - Shares from the booster truncated at the selected iteration; untruncated A0 kept too.
 
 import importlib.util

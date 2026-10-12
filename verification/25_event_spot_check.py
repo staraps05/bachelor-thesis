@@ -4,8 +4,8 @@
 # Outputs: prints only
 # Notes:
 # - Verification script: checks only; writes nothing to Data/
-# - Loads pipeline/1_data_build/08 (week_anchor_map) and 19 (SENT_FILES with SHA256s) via importlib.
-# - PANEL_SHA/SCORING_SHA from pipeline/3_models/17 and 13 (STOP on mismatch); prints PASS or FLAG.
+# - Loads 1_data_build/08 (week_anchor_map) and 19 (SENT_FILES with SHA256s).
+# - PANEL_SHA/SCORING_SHA from 3_models/17 and 13 (STOP on mismatch); prints PASS or FLAG.
 
 import hashlib
 import importlib.util

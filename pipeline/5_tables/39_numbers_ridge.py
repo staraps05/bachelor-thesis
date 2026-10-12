@@ -3,8 +3,8 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/numbers_check/ tableC2_ridge_rows.csv, tableC3_ridge_alpha.csv, tableC3_preregistered_valmse.csv, tableC4_ridge_decomp.csv
 # Notes:
-# - Loads pipeline/3_models/20 via importlib; loaded by pipeline/5_tables/45 (run_grid, weekly_e2, grids).
-# - Double-lag pairing as in pipeline/4_analyses/21; pipeline/5_tables/45 is the single-lag counterpart.
+# - Loads 3_models/20 via importlib; loaded by 5_tables/45 (run_grid, weekly_e2, grids).
+# - Double-lag pairing as in 4_analyses/21; 5_tables/45 is the single-lag counterpart.
 # - Closed-form ridge, no seeds; alpha per fold by validation MSE on both grids.
 
 import importlib.util

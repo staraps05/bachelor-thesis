@@ -4,7 +4,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/3_models/20 via importlib: merge_frame (SHA-checks inputs), dm_test, folds.
+# - Loads 3_models/20 via importlib: merge_frame (SHA-checks inputs), dm_test, folds.
 # - Double-lag pairing (ret_excess_fwd vs sentiment at key t); single-lag rerun is 26.
 
 import importlib.util

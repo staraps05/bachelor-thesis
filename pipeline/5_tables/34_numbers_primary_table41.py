@@ -3,8 +3,8 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/numbers_check/ table41_r2_by_seed.csv, table41_panelAB_summary.csv, table41_dm_by_seed.csv, table41_dm_summary.csv, tableC1_pairwise.csv
 # Notes:
-# - Loads pipeline/3_models/27 (single_lag_frame, dm_test, fit config) and 30 via importlib.
-# - Gate: all 40 per-seed pooled R2 cells must match the pipeline/3_models/26 log within GATE_TOL.
+# - Loads 3_models/27 (single_lag_frame, dm_test, fit config) and 30 via importlib.
+# - Gate: all 40 per-seed pooled R2 cells must match the 3_models/26 log within GATE_TOL.
 # - Sig = seeds with DM p < ALPHA and stat > 0; deltas are within-seed R2 diffs in pp.
 
 import importlib.util

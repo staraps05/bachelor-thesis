@@ -3,7 +3,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/numbers_check/ tableC2_winsor.csv, tableC2_winsor_perseed.csv, tableC2_winsor_dm.csv, tableC2_winsor_clips.csv
 # Notes:
-# - Loads pipeline/3_models/27 via importlib for single_lag_frame, dm_test and the fit config.
+# - Loads 3_models/27 via importlib for single_lag_frame, dm_test and the fit config.
 # - Target clipped per fold at training 0.5/99.5 percentiles; bounds saved to clips CSV.
 # - R2 evaluated on the winsorised (winsor_eval, Table C.2) and raw test target; no gate.
 

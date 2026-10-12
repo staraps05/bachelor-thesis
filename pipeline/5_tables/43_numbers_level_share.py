@@ -3,9 +3,9 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/numbers_check/ tableC8_level_share.csv
 # Notes:
-# - Loads pipeline/3_models/27 via importlib for single_lag_frame, FOLDS and the XGBoost config.
+# - Loads 3_models/27 via importlib for single_lag_frame, FOLDS and the XGBoost config.
 # - Seed 42 only; reproduces verification/28 check 2.
-# - Gate: each arm's seed-42 pooled R2 must match the pipeline/3_models/26 value within 2e-4 pp.
+# - Gate: each arm's seed-42 pooled R2 must match the 3_models/26 value within 2e-4 pp.
 
 import importlib.util
 import sys

@@ -3,8 +3,8 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/numbers_check/ tableC2_calm.csv, tableC2_calm_perseed.csv, tableC2_calm_diagnostics.csv
 # Notes:
-# - Loads pipeline/3_models/27 via importlib for single_lag_frame, dm_test and the fit config.
-# - Only the fold-1 train/validation masks differ from pipeline/3_models/26; week sets disjoint.
+# - Loads 3_models/27 via importlib for single_lag_frame, dm_test and the fit config.
+# - Only the fold-1 train/validation masks differ from 3_models/26; week sets disjoint.
 # - Diagnostics CSV: single-tree fold-1 cells and cells with predictions identical to A0.
 
 import importlib.util

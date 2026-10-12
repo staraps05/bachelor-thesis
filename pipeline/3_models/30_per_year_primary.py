@@ -4,7 +4,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/per_year_primary_r2.csv (160 rows, derived and regenerable)
 # Notes:
-# - Loads pipeline/3_models/20 via importlib; loaded by pipeline/3_models/31, 31a, 31b, 34, 35 and 47.
+# - Loads 3_models/20 via importlib; loaded by 3_models/31, 31a, 31b, 34, 35 and 47.
 # - Gate: all 40 seed x arm pooled R2 match the hard-coded reference within 2e-4 pp.
 
 import importlib.util

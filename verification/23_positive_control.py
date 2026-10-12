@@ -5,7 +5,7 @@
 # Notes:
 # - Verification script: checks only; writes nothing to Data/
 # - Loads pipeline/3_models/20 via importlib (merge_frame SHA-checks the inputs; dm_test).
-# - Prints PASS or FLAG (a FLAG is treated as a bug); pipeline/4_analyses/24 loads its helpers.
+# - Prints PASS or FLAG (a FLAG is treated as a bug); 4_analyses/24 loads its helpers.
 
 import importlib.util
 import math

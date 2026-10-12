@@ -3,7 +3,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/numbers_check/ a0prime_xgb_cells.csv, a0prime_xgb_summary.csv
 # Notes:
-# - Loads pipeline/3_models/27 via importlib for single_lag_frame and the fit configuration.
+# - Loads 3_models/27 via importlib for single_lag_frame and the fit configuration.
 # - Split counts from the booster truncated at the selected number of trees.
 # - A0 is refitted alongside to test whether A0' predictions are bit-identical.
 

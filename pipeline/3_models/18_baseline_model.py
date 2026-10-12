@@ -3,7 +3,7 @@
 # Inputs:  Data/processed/model_frame_structured.parquet
 # Outputs: Data/processed/baseline_predictions.parquet
 # Notes:
-# - Loads pipeline/3_models/17 via importlib (column lists); loaded by pipeline/3_models/19 for fit config.
+# - Loads 3_models/17 via importlib (column lists); loaded by 3_models/19 for fit config.
 # - FOLDS train|val|test: 18-19|20|21, 18-20|21|22, 18-21|22|23 (years); seed 42.
 # - Stops on frame SHA256/shape mismatch or write-protected output; sanity gates only FLAG
 

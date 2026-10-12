@@ -3,8 +3,8 @@
 # Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: Data/processed/numbers_check/ item2_sentiment_share.csv, item2_identical_counts.csv
 # Notes:
-# - Loads pipeline/3_models/27 via importlib for single_lag_frame, the fit config and SENT_ARMS.
-# - Variants follow pipeline/3_models/27 (had_news >= 60%) and 37 (0.5/99.5 clipping); no gate.
+# - Loads 3_models/27 via importlib for single_lag_frame, the fit config and SENT_ARMS.
+# - Variants follow 3_models/27 (had_news >= 60%) and 37 (0.5/99.5 clipping); no gate.
 # - Share = total gain of the five sentiment columns in the truncated booster.
 
 import importlib.util
