@@ -1,0 +1,7 @@
+eval,arm,mean_dm,sig_pos_of_10
+winsor_eval,A1_lm,0.5678294148262916,3
+winsor_eval,A2_finbert,0.7463506777540584,6
+winsor_eval,A3_fingpt,-0.22718092690080577,2
+raw_eval,A1_lm,0.5958513030140076,3
+raw_eval,A2_finbert,0.7600160818995854,6
+raw_eval,A3_fingpt,-0.23488372217513742,2

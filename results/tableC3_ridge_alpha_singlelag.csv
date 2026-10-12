@@ -1,0 +1,7 @@
+grid,fold,alpha_dl,alpha_sl
+pre_registered,1,10000.0,10000.0
+pre_registered,2,10000.0,10000.0
+pre_registered,3,10000.0,10000.0
+extended,1,100000.0,100000.0
+extended,2,10000000.0,10000000.0
+extended,3,1000000.0,1000000.0

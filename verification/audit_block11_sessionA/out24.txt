@@ -1,0 +1,60 @@
+=== STAGE 0: rebuild + LAG RULING APPLIED ===
+  [PASS] model_frame_structured: SHA 09b3f7e9..., 157,277 x 35
+  [PASS] features_lm.parquet: SHA == frozen (b07a8f1e...), m:1, rows 157,277
+  [PASS] features_finbert.parquet: SHA == frozen (24eb3541...), m:1, rows 157,277
+  [PASS] features_fingpt.parquet: SHA == frozen (8cc910ca...), m:1, rows 157,277
+  [PASS] 0 NaN in sentiment columns; had_news identical across arms -> collapsed (share 0.6642)
+  [PASS] ALIGNMENT re-asserted: sentiment_t (strict pre-anchor headline lag, S1) on feature week t; target ret_excess_fwd = week t+1 (D-EVAL-0) -> look-ahead-free
+  [INFO] PAIRING (lag ruling applied, Code/23): score_t = headlines of the PRECEDING Mon-Sun window (S1 keying: target_week IS the return week) vs ret_excess_t = that week's return. SINGLE lag, Ruan-&-Jiang pairing; ret_excess_fwd NOT used.
+  full sample (plumbing-consistent model frame, D-EVAL-0 row set): 157,277 rows, 312 weeks, 2018-2023 (the 620 dropped spell-end rows are immaterial here and keep the row set identical to Code/19-23)
+
+=== STAGE 1: coverage profile per year ===
+  year     rows  had_news firms>=1nw firms 0nw med hl/wk  const-comp share
+  2018   26,236    0.8263        480        48         5            0.8446
+  2019   26,238    0.8333        485        41         5            0.8462
+  2020   26,747    0.6328        488        34         4            0.6484
+  2021   26,242    0.4900        329       194         3            0.5108
+  2022   26,175    0.5736        343       178         4            0.5877
+  2023   25,639    0.6291        385       132         5            0.6398
+  constant-composition view = the 430 firms present in all six years (removes index-turnover confound)
+
+=== STAGE 2: the test, per year x scorer (had_news==1 rows) ===
+  (a) univariate OLS: b in % per unit score [clustered-by-week t]
+  year        n |       lm b      t |  finbert b      t |   fingpt b      t
+  2018   21,679 |  -0.1236  -0.89 |  +0.0284  +0.13 |  +0.0008  +0.00
+  2019   21,863 |  -0.1225  -0.87 |  -0.2363  -0.97 |  -0.0879  -0.50
+  2020   16,926 |  -0.2286  -0.16 |  +1.1587  +0.57 |  +0.2745  +0.19
+  2021   12,859 |  -0.1745  -1.23 |  +0.0285  +0.20 |  +0.0050  +0.06
+  2022   15,013 |  -0.2136  -0.86 |  -0.4687  -1.71 |  -0.2341  -1.23
+  2023   16,129 |  -0.1247  -0.63 |  +0.1878  +0.75 |  +0.0113  +0.06
+  (b) weekly quintile sorts: Q5-Q1 spread %/wk [NW lag-4 t]
+  year   wks |       lm s      t |  finbert s      t |   fingpt s      t
+  2018    52 |  -0.0364  -0.60 |  -0.0315  -0.28 |  -0.0428  -0.48
+  2019    52 |  -0.2663  -3.38 |  -0.1638  -1.39 |  -0.0941  -0.88
+  2020    53 |  +0.1028  +0.66 |  +0.0423  +0.11 |  +0.1634  +0.47
+  2021    52 |  -0.1094  -1.04 |  +0.0711  +0.71 |  -0.0295  -0.25
+  2022    52 |  +0.0668  +0.81 |  -0.0522  -0.45 |  -0.0528  -0.44
+  2023    51 |  -0.1298  -1.65 |  -0.0429  -0.34 |  -0.0582  -0.71
+
+=== STAGE 3: high-coverage vs low-coverage pooled contrast ===
+  [INFO] the FNSPID scrape horizon is PER-SYMBOL (~June 2020, varying by symbol) - no clean global cutoff exists in the frozen artefacts, so per the task's fallback HIGH = 2018-2019 only; 2020 (transition year) excluded from both blocks; LOW = 2021-2023.
+  HIGH 2018-19: n = 43,542, 104 weeks
+    lm_mean       OLS b -0.1610% [t -1.53] | Q5-Q1 -0.1513%/wk [NW t -2.96]
+    finbert_mean  OLS b -0.1420% [t -0.85] | Q5-Q1 -0.0977%/wk [NW t -1.21]
+    fingpt_mean   OLS b -0.0827% [t -0.65] | Q5-Q1 -0.0685%/wk [NW t -0.99]
+  LOW 2021-23: n = 44,001, 155 weeks
+    lm_mean       OLS b -0.2031% [t -1.60] | Q5-Q1 -0.0570%/wk [NW t -1.06]
+    finbert_mean  OLS b -0.1382% [t -1.03] | Q5-Q1 -0.0078%/wk [NW t -0.12]
+    fingpt_mean   OLS b -0.0996% [t -1.09] | Q5-Q1 -0.0467%/wk [NW t -0.75]
+  [INFO] non-degraded subset OPERATIONALISATION (my choice, stated): firms whose LOW-block had_news share >= their HIGH-block share (coverage maintained). 98 of 489 firms present in both blocks qualify.
+  LOW, non-degraded firms only: n = 13,629 rows, 98 firms, 155 weeks
+    lm_mean       OLS b -0.3855% [t -1.94] | Q5-Q1 -0.0877%/wk [NW t -0.77]
+    finbert_mean  OLS b -0.0996% [t -0.59] | Q5-Q1 +0.0102%/wk [NW t +0.10]
+    fingpt_mean   OLS b -0.0085% [t -0.06] | Q5-Q1 -0.0204%/wk [NW t -0.18]
+
+=== STAGE 4: verdict (pre-stated readings) + HARD STOP ===
+  per-year cells with any |t| >= 2.0: 2019/lm (OLS t -0.87, sort t -3.38)
+  pooled blocks with any |t| >= 2.0: HIGH: lm_mean (HIGH 2018-19) | LOW: NONE
+  VERDICT: Significant in HIGH (2018-19) but not LOW (2021-23) -> the null is SCOPED to the degraded-coverage era; must be reported as a limitation and reframes the thesis claim.
+  [POWER NOTE] per-year tests have ~52 weeks each -> LOW POWER; a single year's significance is weak evidence and the pattern across years matters more than any one cell.
+  Nothing promoted (exploratory, read-only). STOP.

@@ -1,0 +1,48 @@
+=== STAGE 0: re-align sentiment to key t+1 (gap-safe) ===
+  [PASS] model_frame_structured: SHA 09b3f7e9..., 157,277 x 35
+  [PASS] features_lm.parquet: SHA == frozen (b07a8f1e...), m:1, rows 157,277
+  [PASS] features_finbert.parquet: SHA == frozen (24eb3541...), m:1, rows 157,277
+  [PASS] features_fingpt.parquet: SHA == frozen (8cc910ca...), m:1, rows 157,277
+  [PASS] 0 NaN in sentiment columns; had_news identical across arms -> collapsed (share 0.6642)
+  [PASS] ALIGNMENT re-asserted: sentiment_t (strict pre-anchor headline lag, S1) on feature week t; target ret_excess_fwd = week t+1 (D-EVAL-0) -> look-ahead-free
+  rows dropped (no week-(t+1) sentiment key): 0 - the (PERMNO, t+1) key exists in the 157,897 grid for EVERY frame row (that successor panel row is exactly why the row survived D-EVAL-0)
+  [PASS] sentiment re-attached from key t+1 for all 157,277 rows; had_news moved with it (share 0.6620 - t+1-shifted coverage)
+  [PASS] ALIGNMENT (single lag): sentiment at key t+1 = headlines of Mon-Sun window t (Code/25 full-table audit: 796,038/796,038 in-window); target = ret_excess_fwd = window-(t+1) return; window t ends (Sunday) before window t+1 begins (Monday) -> headlines complete before the return window starts. NO look-ahead. Structured features remain at week t.
+
+=== STAGE 1: identical protocol (Code/20 config, seeds 42-51) ===
+  seed 42: A0 -1.3365% == Code/20 [PASS] | A1 -1.2133% | A2 -1.2786% | A3 -1.3710%
+  seed 43: A0 -1.3482% == Code/20 [PASS] | A1 -1.3056% | A2 -1.3397% | A3 -1.3473%
+  seed 44: A0 -1.4479% == Code/20 [PASS] | A1 -1.4598% | A2 -1.3789% | A3 -1.3483%
+  seed 45: A0 -1.3562% == Code/20 [PASS] | A1 -1.3681% | A2 -1.3202% | A3 -1.1642%
+  seed 46: A0 -1.2329% == Code/20 [PASS] | A1 -1.2388% | A2 -1.3147% | A3 -1.3215%
+  seed 47: A0 -1.0269% == Code/20 [PASS] | A1 -1.0537% | A2 -1.1404% | A3 -1.0325%
+  seed 48: A0 -1.4714% == Code/20 [PASS] | A1 -1.2960% | A2 -1.5335% | A3 -1.6465%
+  seed 49: A0 -0.9965% == Code/20 [PASS] | A1 -0.9660% | A2 -1.0387% | A3 -1.1912%
+  seed 50: A0 -1.3526% == Code/20 [PASS] | A1 -1.3934% | A2 -1.2898% | A3 -1.3962%
+  seed 51: A0 -1.4232% == Code/20 [PASS] | A1 -1.5371% | A2 -1.5331% | A3 -1.4760%
+  [PASS] A0 reproduces Code/20's per-seed pooled R2 on all 10 seeds - the ONLY change is the sentiment alignment
+
+=== STAGE 2: stability table - SINGLE lag vs Code/20 DOUBLE lag ===
+  pooled OOS R2 (%), 10 seeds:        SINGLE lag (this run)      | DOUBLE lag (Code/20)
+  A0_structured   -1.2992 sd 0.1657 [ -1.4714, -0.9965] |  -1.2992 sd 0.1657 [ -1.4714, -0.9965]
+  A1_lm           -1.2832 sd 0.1751 [ -1.5371, -0.9660] |  -1.2966 sd 0.1298 [ -1.4701, -1.0734]
+  A2_finbert      -1.3167 sd 0.1523 [ -1.5335, -1.0387] |  -1.4024 sd 0.1400 [ -1.7102, -1.2028]
+  A3_fingpt       -1.3295 sd 0.1711 [ -1.6465, -1.0325] |  -1.3666 sd 0.1353 [ -1.6023, -1.1105]
+
+  delta R2 vs A0 within seed (pp):    SINGLE lag                | DOUBLE lag (Code/20)
+  A1_lm           +0.0161 sd 0.0828 [ -0.1139, +0.1753] beats 4/10 |  +0.0026 sd 0.0843 [ -0.1777, +0.1311] beats 6/10
+  A2_finbert      -0.0175 sd 0.0728 [ -0.1136, +0.0691] beats 5/10 |  -0.1031 sd 0.1431 [ -0.2870, +0.1260] beats 2/10
+  A3_fingpt       -0.0302 sd 0.1155 [ -0.1947, +0.1920] beats 3/10 |  -0.0674 sd 0.1221 [ -0.2863, +0.0798] beats 4/10
+
+  adapted DM vs A0 per seed:          SINGLE lag                | DOUBLE lag (Code/20)
+  A1_lm          DM mean +0.180 [-2.559,+2.720] p<0.05: 1/10 | DM mean -0.080 p<0.05: 2/10
+  A2_finbert     DM mean -0.534 [-3.328,+1.969] p<0.05: 1/10 | DM mean -1.326 p<0.05: 1/10
+  A3_fingpt      DM mean -0.702 [-2.717,+3.100] p<0.05: 1/10 | DM mean -0.945 p<0.05: 0/10
+
+=== STAGE 3: verdict + STOP ===
+  A1_lm          mean delta +0.0161pp vs seed sd 0.0828 -> NO FINDING (|mean| <= seed sd); beats A0 4/10; DM p<0.05 in 1/10
+  A2_finbert     mean delta -0.0175pp vs seed sd 0.0728 -> NO FINDING (|mean| <= seed sd); beats A0 5/10; DM p<0.05 in 1/10
+  A3_fingpt      mean delta -0.0302pp vs seed sd 0.1155 -> NO FINDING (|mean| <= seed sd); beats A0 3/10; DM p<0.05 in 1/10
+
+  VERDICT: single-lag result matches the double-lag null. Single lag is now the PRIMARY spec (pre-commit); Code/20 double-lag retained as robustness.
+  STOP - stage gate.
