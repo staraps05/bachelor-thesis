@@ -4,7 +4,7 @@
 # Outputs: prints only
 # Notes:
 # - Verification script: checks only; writes nothing to Data/
-# - Hard-coded counts (55 zero-headline firms, 618 panel firms) from the pipeline/13 run.
+# - Hard-coded counts (55 zero-headline firms, 618 panel firms) from the pipeline/1_data_build/13 run.
 # - Prints a NO ACTION / RULING NEEDED verdict; advisory only, exit status is always 0.
 
 import re

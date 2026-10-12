@@ -4,8 +4,8 @@
 # Outputs: prints only
 # Notes:
 # - Verification script: checks only; writes nothing to Data/
-# - EXPORT_SHA and EXPORT_ROWS (796,038) were recorded when pipeline/16a wrote the file.
-# - Exits with STOP on a missing file, SHA or row-count mismatch; then run colab/17b.
+# - EXPORT_SHA and EXPORT_ROWS (796,038) were recorded when pipeline/2_sentiment/16a wrote the file.
+# - Exits with STOP on a missing file, SHA or row-count mismatch; then run pipeline/2_sentiment/colab/17b.
 
 import hashlib
 import sys

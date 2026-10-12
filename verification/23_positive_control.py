@@ -4,8 +4,8 @@
 # Outputs: prints only
 # Notes:
 # - Verification script: checks only; writes nothing to Data/
-# - Loads pipeline/20 via importlib (merge_frame SHA-checks the inputs; dm_test).
-# - Prints PASS or FLAG (a FLAG is treated as a bug); pipeline/24 loads its helpers.
+# - Loads pipeline/3_models/20 via importlib (merge_frame SHA-checks the inputs; dm_test).
+# - Prints PASS or FLAG (a FLAG is treated as a bug); pipeline/4_analyses/24 loads its helpers.
 
 import importlib.util
 import math
@@ -18,7 +18,7 @@ import pandas as pd
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 _spec = importlib.util.spec_from_file_location(
-    "seed20", REPO_ROOT / "pipeline" / "20_seed_stability.py")
+    "seed20", REPO_ROOT / "pipeline" / "3_models" / "20_seed_stability.py")
 _c20 = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_c20)
 merge_frame, dm_test = _c20.merge_frame, _c20.dm_test

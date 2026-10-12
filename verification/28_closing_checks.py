@@ -4,8 +4,8 @@
 # Outputs: prints only
 # Notes:
 # - Verification script: checks only; writes nothing to Data/
-# - Loads pipeline/27 via importlib (single_lag_frame, fit configuration).
-# - Check 2 stops unless regenerated R2 matches the pipeline/26 log (2e-4 pp); see 43.
+# - Loads pipeline/3_models/27 via importlib (single_lag_frame, fit configuration).
+# - Check 2 stops unless regenerated R2 matches the pipeline/3_models/26 log (2e-4 pp); see 43.
 
 import hashlib
 import importlib.util
@@ -20,7 +20,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 PROC = REPO_ROOT / "Data" / "processed"
 
 _spec = importlib.util.spec_from_file_location(
-    "cov27", REPO_ROOT / "pipeline" / "27_covered_subsample.py")
+    "cov27", REPO_ROOT / "pipeline" / "3_models" / "27_covered_subsample.py")
 _c27 = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_c27)
 single_lag_frame = _c27.single_lag_frame

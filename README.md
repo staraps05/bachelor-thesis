@@ -6,8 +6,8 @@ Author: Ruben Stark. University of St. Gallen, 2026. Supervisor: Prof. Dr. Despo
 
 ## Folder layout
 
-- `pipeline/`: the numbered scripts, run in order from the repository root.
-- `pipeline/colab/`: the two GPU scoring notebooks (FinBERT, FinGPT) for Google Colab.
+- `pipeline/`: the numbered scripts in five stage folders, run in order from the repository root: `1_data_build/`, `2_sentiment/`, `3_models/`, `4_analyses/`, `5_tables/`.
+- `pipeline/2_sentiment/colab/`: the two GPU scoring notebooks (FinBERT, FinGPT) for Google Colab.
 - `verification/`: read-only checks of raw inputs and intermediate files; they print and write nothing except `verification/07`.
 - `archive/`: an early Colab pilot of the FinGPT scorer, not part of the pipeline.
   - `archive/fingpt_sentiment_pilot.py`: Colab pilot of the FinGPT scorer; not part of the pipeline.
@@ -15,9 +15,9 @@ Author: Ruben Stark. University of St. Gallen, 2026. Supervisor: Prof. Dr. Despo
 
 ## Pipeline in run order
 
-Scripts load one another by relative path (`REPO_ROOT/pipeline/...`), so run them from the repository root. "Hours" marks the multi-seed XGBoost fits; everything else runs in seconds to minutes.
+Scripts load one another by relative path (`REPO_ROOT/pipeline/<stage>/...`), so run them from the repository root. "Hours" marks the multi-seed XGBoost fits; everything else runs in seconds to minutes.
 
-Data build
+Data build (`pipeline/1_data_build/`)
 - `01_verify_sp500_membership.py`: check the CRSP membership export and write the 719-PERMNO universe.
 - `06_slim_fnspid_headlines.py`: stream the 22 GB FNSPID file into a slim 2015-2023 headline table.
 - `08_build_skeleton.py`: one row per firm and week while the firm is an index member.
@@ -27,17 +27,17 @@ Data build
 - `12_preprocess_freeze.py`: weekly rank normalisation and median imputation; writes the panel and its manifest.
 - `13_build_scoring_input.py`: map headlines to firms point-in-time and to their target week.
 
-Sentiment scoring
+Sentiment scoring (`pipeline/2_sentiment/`)
 - `15_score_lm.py`: Loughran-McDonald scores and weekly moments (shared code in `sentiment_aggregation.py`).
 - `16a_export_for_colab.py`: export the headline table for the notebooks.
-- `colab/16b_score_finbert.ipynb` (Colab GPU): FinBERT probabilities per headline.
+- `colab/16b_score_finbert.ipynb` (in `2_sentiment/`, Colab GPU): FinBERT probabilities per headline.
 - `16c_finbert_aggregate_freeze.py`: validate the FinBERT scores and aggregate to weekly moments.
 - `verification/17a_export_for_colab.py`: confirm the export is unchanged before the FinGPT run.
-- `colab/17b_score_fingpt.ipynb` (Colab GPU): FinGPT probabilities per headline (Llama-2-7B base, 4-bit).
+- `colab/17b_score_fingpt.ipynb` (in `2_sentiment/`, Colab GPU): FinGPT probabilities per headline (Llama-2-7B base, 4-bit).
 - `17c_fingpt_aggregate_freeze.py`: validate the FinGPT scores and aggregate to weekly moments.
 
-Model frame and fits
-- `17_pre_model_integrity.py`: attach the week t+1 target, scan for leakage and degenerate inputs.
+Model frame and fits (`pipeline/3_models/`)
+- `17_pre_model_integrity.py` (in `3_models/`): attach the week t+1 target, scan for leakage and degenerate inputs.
 - `18_baseline_model.py`: the structured-only XGBoost baseline A0, single seed.
 - `19_four_arm_comparison.py` (hours): the four arms, single seed, writes the prediction files.
 - `20_seed_stability.py` (hours): the four arms over ten seeds; supplies folds, seeds and helpers to later scripts.
@@ -47,7 +47,7 @@ Model frame and fits
 - `30a_zero_delta_addendum.py`: census of fold 2 and 3 cells with a delta of exactly zero.
 - `31_importance_and_triangle.py`, `31a_a2_feature_shares.py`, `31b_a2_block_sums.py` (hours): feature importance and the scorer correlation triangle.
 
-Supporting analyses
+Supporting analyses (`pipeline/4_analyses/`)
 - `21_ridge_exploration.py`: ridge counterpart to the XGBoost arms.
 - `22_dispersion_vs_count.py`: are the dispersion features a proxy for headline count?
 - `24_coverage_by_year.py`: coverage profile and per-year tests.
@@ -55,7 +55,7 @@ Supporting analyses
 - `32_headline_age_bounds.py`: headline age bounds under the one-week construction.
 - `33_pairwise_arm_differences.py`: pairwise differences among the sentiment arms.
 
-Thesis tables (each writes full-precision CSVs to `Data/processed/numbers_check/`, copied to `results/`)
+Thesis tables (`pipeline/5_tables/`; each writes full-precision CSVs to `Data/processed/numbers_check/`, copied to `results/`)
 - `34_numbers_primary_table41.py` (hours): Table 4.1 and Table C.1.
 - `35_numbers_importance_table42.py` (hours): Table 4.2.
 - `36_numbers_covered.py`, `37_numbers_winsor.py`, `38_numbers_calm.py` (hours): Table C.2 covered, winsorised and calm-period rows.
@@ -75,8 +75,8 @@ Verification scripts (`verification/`)
 
 1. Python 3.9.6; `pip install -r requirements.txt`.
 2. Place the raw files listed under Data in `Data/` (and `Data/colab/` for the notebook outputs).
-3. From the repository root, run `python pipeline/<script>.py` in the order above. Each script verifies its inputs by SHA-256 or row count and stops on a mismatch.
-4. Colab: upload `Data/colab/finbert_input.csv` (written by `16a`) to Google Drive at `thesis_finbert/finbert_input.csv`, run `colab/16b` on a GPU runtime, download `finbert_scores.csv` into `Data/colab/`, then run `16c`. Run `verification/17a`, then `colab/17b` (the FinGPT notebook reads the same upload and installs transformers, peft, accelerate and bitsandbytes), download `fingpt_scores.csv` into `Data/colab/`, then run `17c`.
+3. From the repository root, run `python pipeline/<stage>/<script>.py` in the order above. Each script verifies its inputs by SHA-256 or row count and stops on a mismatch.
+4. Colab: upload `Data/colab/finbert_input.csv` (written by `16a`) to Google Drive at `thesis_finbert/finbert_input.csv`, run `pipeline/2_sentiment/colab/16b` on a GPU runtime, download `finbert_scores.csv` into `Data/colab/`, then run `16c`. Run `verification/17a`, then `pipeline/2_sentiment/colab/17b` (the FinGPT notebook reads the same upload and installs transformers, peft, accelerate and bitsandbytes), download `fingpt_scores.csv` into `Data/colab/`, then run `17c`.
 
 ## Data
 

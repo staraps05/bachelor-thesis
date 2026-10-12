@@ -4,8 +4,8 @@
 # Outputs: prints only
 # Notes:
 # - Verification script: checks only; writes nothing to Data/
-# - Loads pipeline/08 (week_anchor_map) and 19 (SENT_FILES with SHA256s) via importlib.
-# - PANEL_SHA/SCORING_SHA from pipeline/17 and 13 (STOP on mismatch); prints PASS or FLAG.
+# - Loads pipeline/1_data_build/08 (week_anchor_map) and 19 (SENT_FILES with SHA256s) via importlib.
+# - PANEL_SHA/SCORING_SHA from pipeline/3_models/17 and 13 (STOP on mismatch); prints PASS or FLAG.
 
 import hashlib
 import importlib.util
@@ -26,13 +26,13 @@ FF_FILE = REPO_ROOT / "Data" / "F-F_Research_Data_Factors_daily.csv"
 MEMBER_FILE = REPO_ROOT / "Data" / "membership_file.csv"
 
 _s08 = importlib.util.spec_from_file_location(
-    "skel08", REPO_ROOT / "pipeline" / "08_build_skeleton.py")
+    "skel08", REPO_ROOT / "pipeline" / "1_data_build" / "08_build_skeleton.py")
 _m08 = importlib.util.module_from_spec(_s08)
 _s08.loader.exec_module(_m08)
 week_anchor_map = _m08.week_anchor_map          # the week definition
 
 _s19 = importlib.util.spec_from_file_location(
-    "cmp19", REPO_ROOT / "pipeline" / "19_four_arm_comparison.py")
+    "cmp19", REPO_ROOT / "pipeline" / "3_models" / "19_four_arm_comparison.py")
 _m19 = importlib.util.module_from_spec(_s19)
 _s19.loader.exec_module(_m19)
 SENT_FILES = _m19.SENT_FILES                    # feature paths + SHA256s
