@@ -1,46 +1,11 @@
 # %% 49_numbers_data_figures.py
-# Purpose: Recompute the Chapter 3 data figures from the raw and processed
-#          inputs: firm-weeks lost to mid-week index exits and their post-exit
-#          return, between-anchor spin-off entities, the SVB exit week, rows
-#          with no price on their anchor day, JKP merge staleness, the 36
-#          JKP-absent firms, the rank-transform bounds and the share of
-#          headlines with a midnight timestamp.
-# Inputs:  Data/crsp_daily_prices.csv
-#          Data/membership_file.csv
-#          Data/F-F_Research_Data_Factors_daily.csv
-#          Data/Fundamentals.csv
-#          Data/fnspid_nasdaq_news_raw.csv
-#          Data/processed/skeleton.parquet
-#          Data/processed/panel_structured.parquet
-#          Data/processed/panel_target.parquet
-#          Data/processed/panel_final.parquet
-#          Data/processed/scoring_input.parquet
-# Outputs: Data/processed/numbers_check/item3_data_figures.csv
-#          Data/processed/numbers_check/item3_a_lost_weeks.csv
-#          Data/processed/numbers_check/item3_h_absent_firms.csv
+# Purpose: Recompute the Chapter 3 data figures (lost exit weeks, spin-offs, SVB week, anchor-day prices, JKP staleness, absent firms, rank bounds, midnight share).
+# Inputs:  Data/crsp_daily_prices.csv, Data/membership_file.csv, Data/F-F_Research_Data_Factors_daily.csv, Data/Fundamentals.csv, Data/fnspid_nasdaq_news_raw.csv, Data/processed/skeleton.parquet, Data/processed/panel_structured.parquet, Data/processed/panel_target.parquet, Data/processed/panel_final.parquet, Data/processed/scoring_input.parquet
+# Outputs: Data/processed/numbers_check/ item3_data_figures.csv, item3_a_lost_weeks.csv, item3_h_absent_firms.csv
 # Notes:
-# - Loads pipeline/08_build_skeleton.py via importlib for week_anchor_map, the
-#   week/anchor definition (anchor = last trading day of the Mon-Sun week).
-# - (a) member spells ending inside the window before their week's anchor
-#   with no skeleton row, as a share of the 157,897 panel rows; (b) their
-#   first post-exit weekly excess return (RF from the daily FF file; weeks
-#   without a return count as 0 in the "/66" figure; market-adjusted = minus
-#   the equal-weighted panel mean that week); (c) in-window spells covering
-#   no anchor whose PERMNO has no panel row; (d) SVB (PERMNO 11786) loss in
-#   week 2023-03-10 from the 2023-03-03 close to the last traded and the last
-#   quoted price; (e) spells ending on an anchor with no traded price that
-#   day, plus skeleton rows whose DlyCap falls back to an earlier in-week day.
-# - (g) staleness = anchor minus JKP eom after a backward merge_asof within
-#   45 days; (h) panel PERMNOs absent from Fundamentals.csv, split by SIC 6798
-#   (REIT) and USIncFlg == N; (j) over all (week, characteristic) cells of
-#   the 22 rank-transformed characteristics with >= 3 non-missing values, the
-#   worst per-week max, min and |mean|.
-# - (l) share of headlines with a 00:00:00 timestamp in the raw FNSPID file
-#   and in the kept scoring-input headlines, matched back on (ticker, date,
-#   HTML-unescaped and whitespace-normalised title). The raw file is 22 GB;
-#   this step dominates runtime and memory.
-# - scoring_input.parquet is checked against the SHA256 recorded in
-#   pipeline/15 before use.
+# - Loads pipeline/08 via importlib for week_anchor_map.
+# - Reads the 22 GB raw FNSPID file for the midnight share; this step dominates runtime.
+# - scoring_input.parquet is checked against the SHA256 recorded in pipeline/15.
 
 import hashlib
 import html

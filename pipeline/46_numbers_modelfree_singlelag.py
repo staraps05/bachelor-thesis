@@ -1,31 +1,11 @@
 # %% 46_numbers_modelfree_singlelag.py
-# Purpose: Reproduce Table C.5 (model-free univariate slope and weekly Q5-Q1
-#          quintile spread per scorer) under the single-lag pairing of
-#          pipeline/26, next to the double-lag values of pipeline/41's round-1
-#          outputs.
-# Inputs:  Data/processed/model_frame_structured.parquet (via merge_frame, single_lag_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-#          Data/processed/scoring_input_coverage.csv
-#          Data/processed/numbers_check/tableC5_modelfree.csv
-#          Data/processed/numbers_check/tableC7_count_corr.csv
-# Outputs: Data/processed/numbers_check/tableC5_modelfree_singlelag.csv
+# Purpose: Table C.5 (univariate slope and Q5-Q1 spread) under the single-lag pairing, next to pipeline/41's values.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet, Data/processed/scoring_input_coverage.csv, Data/processed/numbers_check/tableC5_modelfree.csv, Data/processed/numbers_check/tableC7_count_corr.csv
+# Outputs: Data/processed/numbers_check/ tableC5_modelfree_singlelag.csv
 # Notes:
-# - Loads pipeline/41_numbers_modelfree_countcorr.py (clustered_ols, dm_test,
-#   merge_frame, constants) and pipeline/27_covered_subsample.py
-#   (single_lag_frame) via importlib; the test logic is pipeline/41's
-#   unchanged, only the frame differs.
-# - Double lag (pipeline/41): sentiment keyed on feature week t, two-week gap
-#   to the target. Single lag (pipeline/26): sentiment and had_news
-#   re-attached from the week-(t+1) key.
-# - Sample: test-year (2021-2023) firm-weeks with had_news == 1. The slope t
-#   is clustered by week; the spread is the weekly mean target of quintile 5
-#   minus quintile 1 (rank ties broken by row order), tested with the NW DM
-#   test of pipeline/41; weeks with fewer than 5 covered firms are skipped.
-# - Two gates stop the run: the double-lag C.5 and C.7 values must match the
-#   recorded CSVs within 1e-9, and the single-lag frame must have the
-#   pipeline/26 row count, test-row count and had_news share.
+# - Loads pipeline/41 (clustered_ols, dm_test, merge_frame) and pipeline/27 via importlib.
+# - Gate 1: double-lag C.5 and C.7 must match the recorded CSVs within 1e-9.
+# - Gate 2: single-lag frame matches pipeline/26 rows, test rows and had_news share.
 
 import importlib.util
 import sys

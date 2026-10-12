@@ -1,20 +1,11 @@
 # 07_verify_characteristic_selection.py
-# Purpose: Verify the selected JKP characteristic codes (13 Block-B codes plus the
-#          conditional beta_60m) against Data/Fundamentals.csv: each code must exist
-#          verbatim as a column, and its NaN share overall, per calendar year and its
-#          firm coverage are reported. Does not clean, impute or substitute; writes
-#          only the summary CSV.
+# Purpose: Verify the 13 selected JKP characteristic codes plus the conditional beta_60m against Data/Fundamentals.csv: each must exist verbatim; NaN share overall, per year and firm coverage are reported.
 # Inputs:  Data/Fundamentals.csv
 # Outputs: Data/processed/characteristic_selection_verification.csv
 # Notes:
-# - Code list, thresholds and the expected firm count (681) follow docs/characteristic_selection.md.
-# - A code is marked REVIEW when overall NaN > 15% or any single year > 30%; this is a
-#   review trigger, not an exclusion.
-# - beta_60m is taken pre-computed from JKP because the CRSP daily sample starts in 2015,
-#   too short for a 60-month lookback.
-# - Missing codes get close-match candidates printed for reference only.
-# - Only the ID columns and the present codes are loaded. Deterministic; pandas + stdlib only.
-# Verification script: checks only; writes only Data/processed/characteristic_selection_verification.csv
+# - Checks only; writes only Data/processed/characteristic_selection_verification.csv
+# - Codes, thresholds and the expected firm count (681) follow the thesis data chapter.
+# - REVIEW (overall NaN > 15% or any year > 30%) is a review trigger, not an exclusion.
 
 import difflib
 import sys

@@ -1,29 +1,11 @@
 # %% 37_numbers_winsor.py
-# Purpose: Re-run the four-arm single-lag comparison with a winsorised target
-#          and save the per-arm delta vs A0 and the DM counts behind the
-#          winsorised rows of Table C.2.
-# Inputs:  Data/processed/model_frame_structured.parquet (via single_lag_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/tableC2_winsor.csv
-#          Data/processed/numbers_check/tableC2_winsor_perseed.csv
-#          Data/processed/numbers_check/tableC2_winsor_dm.csv
-#          Data/processed/numbers_check/tableC2_winsor_clips.csv
+# Purpose: Four-arm single-lag run with a winsorised target: Table C.2 winsorised rows and DM counts.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ tableC2_winsor.csv, tableC2_winsor_perseed.csv, tableC2_winsor_dm.csv, tableC2_winsor_clips.csv
 # Notes:
-# - Loads pipeline/27_covered_subsample.py via importlib for single_lag_frame,
-#   dm_test and the fit configuration (params, depth grid, folds, seeds).
-# - Winsorisation: per fold, the target is clipped at the 0.5 and 99.5
-#   percentiles of that fold's training rows only; the same bounds are applied
-#   to the training and validation labels (fitting and depth selection).
-#   Inputs are not winsorised. The bounds per fold go to the clips CSV.
-# - R2 is evaluated twice: against the winsorised test target ("winsor_eval",
-#   the Table C.2 read) and against the raw test target ("raw_eval").
-# - Deltas are within-seed pooled R2 differences (pp) vs A0; mean and sd
-#   (ddof=1) over 10 seeds; "beats_a0_of_10" counts seeds with delta > 0.
-# - DM: Newey-West (lag 4) t on weekly mean squared-error differences A0 minus
-#   arm under each evaluation; "sig_pos_of_10" = seeds with p < ALPHA and
-#   stat > 0. No reproduction gate (the target differs from the primary run).
+# - Loads pipeline/27 via importlib for single_lag_frame, dm_test and the fit config.
+# - Target clipped per fold at training 0.5/99.5 percentiles; bounds saved to clips CSV.
+# - R2 evaluated on the winsorised (winsor_eval, Table C.2) and raw test target; no gate.
 
 import importlib.util
 import sys

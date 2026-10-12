@@ -1,35 +1,11 @@
 # %% 39_numbers_ridge.py
-# Purpose: Round-1 ridge results behind the Table C.2 ridge rows ("pre-registered
-#          grid" and "extended grid"), Table C.3 (selected penalty by fold) and
-#          Table C.4 (decomposition of the extended-grid improvement), on the
-#          double-lag frame of pipeline/20-21.
-# Inputs:  Data/processed/model_frame_structured.parquet (via merge_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/tableC2_ridge_rows.csv
-#          Data/processed/numbers_check/tableC3_ridge_alpha.csv
-#          Data/processed/numbers_check/tableC3_preregistered_valmse.csv
-#          Data/processed/numbers_check/tableC4_ridge_decomp.csv
+# Purpose: Round-1 ridge results on the double-lag frame: Table C.2 ridge rows, Table C.3 and Table C.4.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ tableC2_ridge_rows.csv, tableC3_ridge_alpha.csv, tableC3_preregistered_valmse.csv, tableC4_ridge_decomp.csv
 # Notes:
-# - Loads pipeline/20_seed_stability.py via importlib for merge_frame, dm_test,
-#   r2_oos, FOLDS and the input lists. This script is itself loaded by
-#   pipeline/45, which re-runs the same ridge single-lag (run_grid, weekly_e2,
-#   both grids) and reads the four CSVs above for comparison.
-# - Pairing is double lag (sentiment keyed on the feature week t, target is
-#   week t+1), as in pipeline/21; pipeline/45 is the single-lag counterpart.
-# - Ridge is closed form (no seeds). Inputs are standardised per fold with the
-#   train-row mean and sd (ddof=0); the intercept is unpenalised (y centred on
-#   the train mean). Alpha grids: pre-registered {0.1, ..., 1e4} and extended
-#   {0.1, ..., 1e7}; per fold the alpha with the smallest validation MSE wins,
-#   ties going to the smaller alpha.
-# - Table C.4 splits each arm's gain over A0 into the news indicator (A0' = A0
-#   plus had_news, minus A0), the mean score beyond the indicator (mean-only
-#   arm minus A0') and the remainder attributed to dispersion (full arm minus
-#   mean-only arm).
-# - tableC3_preregistered_valmse.csv records A0's validation MSE at every
-#   pre-registered alpha and whether it is still falling at the grid's upper
-#   end (1e4).
+# - Loads pipeline/20 via importlib; loaded by pipeline/45 (run_grid, weekly_e2, grids).
+# - Double-lag pairing as in pipeline/21; pipeline/45 is the single-lag counterpart.
+# - Closed-form ridge, no seeds; alpha per fold by validation MSE on both grids.
 
 import importlib.util
 import sys

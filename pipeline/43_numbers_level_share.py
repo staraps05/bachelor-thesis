@@ -1,23 +1,11 @@
 # %% 43_numbers_level_share.py
-# Purpose: Reproduce Table C.8 (level share: bias vs skill decomposition of the
-#          pooled out-of-sample R2 deficit per arm) for the single-lag primary
-#          XGBoost run at seed 42. Reproduces verification/28 check 2.
-# Inputs:  Data/processed/model_frame_structured.parquet (via merge_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/tableC8_level_share.csv
+# Purpose: Table C.8: bias-vs-skill decomposition of the pooled R2 deficit per arm, single-lag run at seed 42.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ tableC8_level_share.csv
 # Notes:
-# - Loads pipeline/27_covered_subsample.py via importlib for single_lag_frame,
-#   FOLDS and the XGBoost configuration (FIXED_PARAMS, AMENDMENT, DEPTH_GRID,
-#   NUM_ROUND_CAP, EARLY_STOP, INPUTS_30, TARGET_FWD).
-# - Seed 42 only. Per fold the depth with the lowest validation MSE (early
-#   stopping) is kept; test predictions are pooled over the three folds.
-# - Gate: each arm's seed-42 pooled R2 must match the value recorded in
-#   pipeline/26 within 2e-4 pp, else the run stops.
-# - Decomposition: level_r2_pts = bias^2 * n / sum(y^2) * 100 with
-#   bias = mean(yhat) - mean(y); level_share = level_r2_pts / (-pooled R2) * 100,
-#   the per cent of the (negative) pooled R2 due to the level error alone.
+# - Loads pipeline/27 via importlib for single_lag_frame, FOLDS and the XGBoost config.
+# - Seed 42 only; reproduces verification/28 check 2.
+# - Gate: each arm's seed-42 pooled R2 must match the pipeline/26 value within 2e-4 pp.
 
 import importlib.util
 import sys

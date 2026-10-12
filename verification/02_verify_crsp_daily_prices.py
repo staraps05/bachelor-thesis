@@ -1,20 +1,11 @@
 # %% 02_verify_crsp_daily_prices.py
-# Purpose: Verify the CRSP daily stock file (crsp_a_stock, CIZ format) exported from
-#          WRDS for the S&P 500 universe: coverage against the PERMNO universe, the
-#          AAPL 4:1 split, return range, missingness, the negative-price convention
-#          and (permno, dlycaldt) uniqueness. Read-only: writes nothing.
-# Inputs:  Data/crsp_daily_prices.csv
-#          Data/processed/sp500_permnos.txt
+# Purpose: Verify the WRDS CRSP daily stock file for the S&P 500 universe: PERMNO coverage, AAPL 4:1 split, return range, missingness, negative-price convention, (permno, dlycaldt) uniqueness.
+# Inputs:  Data/crsp_daily_prices.csv, Data/processed/sp500_permnos.txt
 # Outputs: prints only
 # Notes:
-# - Strips the write bits of Data/crsp_daily_prices.csv before reading, so the raw file stays immutable.
-# - Only five columns are loaded; column names are matched case-insensitively.
-# - Universe PERMNOs absent from the price file are reported, not failed (a firm that
-#   left the index before the price sample starts has no rows).
-# - |dlyret| > 1.0 and identical duplicate rows are flagged for review; only conflicting
-#   (permno, dlycaldt) duplicates and a missing or out-of-band AAPL split fail the run.
-# - Deterministic; pandas + stdlib only. Exit status 1 if any check fails.
-# Verification script: checks only; writes nothing to Data/
+# - Verification script: checks only; writes nothing to Data/
+# - Strips the write bits of the raw file before reading, so it stays immutable.
+# - Exit status 1 if any check fails; universe PERMNOs absent from the file only reported.
 
 import stat
 import sys

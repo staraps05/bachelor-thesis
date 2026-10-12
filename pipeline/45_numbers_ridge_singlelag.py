@@ -1,37 +1,11 @@
 # %% 45_numbers_ridge_singlelag.py
-# Purpose: Re-run the ridge instrument of pipeline/39 under the single-lag
-#          pairing: Table C.2 ridge rows, Table C.3 (selected penalty by fold)
-#          and Table C.4 (decomposition of the extended-grid improvement), with
-#          pipeline/39's double-lag values side by side.
-# Inputs:  Data/processed/model_frame_structured.parquet (via merge_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-#          Data/processed/numbers_check/tableC2_ridge_rows.csv
-#          Data/processed/numbers_check/tableC3_ridge_alpha.csv
-#          Data/processed/numbers_check/tableC4_ridge_decomp.csv
-# Outputs: Data/processed/numbers_check/tableC2_ridge_rows_singlelag.csv
-#          Data/processed/numbers_check/tableC3_ridge_alpha_singlelag.csv
-#          Data/processed/numbers_check/tableC3_preregistered_valmse_singlelag.csv
-#          Data/processed/numbers_check/tableC4_ridge_decomp_singlelag.csv
+# Purpose: Ridge instrument of pipeline/39 under the single-lag pairing: Table C.2 ridge rows, Table C.3, Table C.4.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet, Data/processed/numbers_check/tableC2_ridge_rows.csv, Data/processed/numbers_check/tableC3_ridge_alpha.csv, Data/processed/numbers_check/tableC4_ridge_decomp.csv
+# Outputs: Data/processed/numbers_check/ tableC2_ridge_rows_singlelag.csv, tableC3_ridge_alpha_singlelag.csv, tableC3_preregistered_valmse_singlelag.csv, tableC4_ridge_decomp_singlelag.csv
 # Notes:
-# - Loads pipeline/39_numbers_ridge.py (run_grid, weekly_e2, merge_frame,
-#   dm_test, FOLDS, both grids) and pipeline/27_covered_subsample.py
-#   (single_lag_frame) via importlib. Only the frame differs from pipeline/39.
-# - Pairing: double-lag = merge_frame (sentiment keyed on the feature week t);
-#   single-lag = single_lag_frame (sentiment and had_news re-attached from the
-#   week-(t+1) key, pipeline/26 alignment).
-# - Alpha grids: pre-registered GRID_PRE {0.1..1e4} and extended GRID_EXT
-#   {0.1..1e7}; per fold the alpha with the lowest validation MSE is selected
-#   (ties -> smaller). Inputs are standardised with train-fold mean/sd
-#   (ddof=0); the intercept is unpenalised. Ridge is deterministic, no seeds.
-# - Gate 1: the double-lag re-run must reproduce pipeline/39's three CSVs
-#   (deltas, DM, p, decomposition within 1e-9; alphas exactly). Gate 2: the
-#   single-lag frame must have 157,277 rows, 78,056 test rows and had_news
-#   share 0.6620.
-# - Table C.4 splits each extended-grid arm delta vs A0 into: news indicator
-#   (A0' = A0 + had_news, minus A0), mean score beyond the indicator (mean-only
-#   arm minus A0') and remainder/dispersion (full arm minus mean-only arm).
+# - Loads pipeline/39 (run_grid, weekly_e2, grids) and 27 (single_lag_frame) by importlib.
+# - Gate 1: the double-lag re-run must reproduce pipeline/39's CSVs (1e-9, alphas exact).
+# - Gate 2: single-lag frame has 157,277 rows, 78,056 test rows, had_news share 0.6620.
 
 import importlib.util
 import sys

@@ -1,17 +1,11 @@
 # %% fingpt_sentiment_pilot.py
-# Purpose: Archived Colab pilot that scores a handful of headlines with the FinGPT
-#          LoRA adapter on Llama-2-7B and prints p_pos/p_neu/p_neg per headline.
-#          Superseded by pipeline/colab/17b_score_fingpt.ipynb.
-# Inputs:  an uploaded CSV with a `headline` column (Colab files.upload), or the
-#          built-in fallback list
+# Purpose: Archived Colab pilot of the FinGPT scorer (LoRA adapter on Llama-2-7B, p_pos/p_neu/p_neg per headline); not part of the pipeline, superseded by pipeline/colab/17b_score_fingpt.ipynb.
+# Inputs:  an uploaded CSV with a `headline` column (Colab files.upload), or the built-in fallback list
 # Outputs: pilot_scores.csv in the Colab working directory
 # Notes:
 # - Archived; not part of the pipeline and not used by any thesis number.
 # - Runs only in Colab on a CUDA GPU (T4): bitsandbytes 4-bit is NVIDIA-only.
-# - Model: NousResearch/Llama-2-7b-hf (ungated mirror) + FinGPT/fingpt-mt_llama2-7b_lora,
-#   loaded in 4-bit nf4.
-# - Score = p_pos - p_neg from a softmax over the three class-token logits at the
-#   answer position; the same construction is used in 17b.
+# - Model: NousResearch/Llama-2-7b-hf + FinGPT/fingpt-mt_llama2-7b_lora, 4-bit nf4.
 !pip -q install -U transformers peft accelerate bitsandbytes "pandas<2.3"
 
 # %% [cell 2] Load base + FinGPT LoRA adapter in 4-bit

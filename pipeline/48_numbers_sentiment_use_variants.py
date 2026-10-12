@@ -1,30 +1,11 @@
 # %% 48_numbers_sentiment_use_variants.py
-# Purpose: Compute the sentiment gain share (item 2 of the numbers check) under
-#          two sentiment-use variants of the single-lag four-arm run, the
-#          covered subsample and the winsorised target, plus the count of
-#          fold-2/3 cells whose test predictions are identical to A0.
-# Inputs:  Data/processed/model_frame_structured.parquet (via single_lag_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/item2_sentiment_share.csv
-#          Data/processed/numbers_check/item2_identical_counts.csv
+# Purpose: Sentiment gain share under two variants of the single-lag run (covered subsample, winsorised target), plus identical-to-A0 cells.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ item2_sentiment_share.csv, item2_identical_counts.csv
 # Notes:
-# - Loads pipeline/27_covered_subsample.py via importlib for single_lag_frame,
-#   the fit configuration (params, depth grid, folds, seeds) and SENT_ARMS.
-# - Variants: "covered60" keeps firms with had_news >= 60% of their 2021-2023
-#   weeks, all years, as in pipeline/27; "winsorised" clips the train and
-#   validation target at the training 0.5/99.5 percentiles per fold, as in
-#   pipeline/37. Test rows are never clipped.
-# - Arms: A0 = 30 structured inputs; A1/A2/A3 add the LM / FinBERT / FinGPT
-#   mean, std, range, kurt and had_news. Fits: 10 seeds x 3 folds, depth
-#   chosen on validation MSE with early stopping.
-# - Sentiment share = total_gain of the five sentiment columns over all
-#   columns in the truncated booster (first best_iteration+1 trees); reported
-#   as the mean over seeds x folds, the SD over seeds of the per-seed fold
-#   mean, and per fold.
-# - Identical cells: of the 60 seed x sentiment-arm x fold-{2,3} cells, those
-#   whose test predictions equal A0's exactly.
+# - Loads pipeline/27 via importlib for single_lag_frame, the fit config and SENT_ARMS.
+# - Variants follow pipeline/27 (had_news >= 60%) and 37 (0.5/99.5 clipping); no gate.
+# - Share = total gain of the five sentiment columns in the truncated booster.
 
 import importlib.util
 import sys

@@ -1,26 +1,11 @@
 # %% 40_numbers_a0prime_xgb.py
-# Purpose: Original A0' XGBoost check: fit A0' (the 30 structured inputs plus the
-#          had_news indicator) under the primary single-lag protocol and count
-#          how many of the 30 selected boosters (10 seeds x 3 folds) split on
-#          had_news at all; also tests whether A0' predictions are bit-identical
-#          to A0's. Reproduced by pipeline/47.
-# Inputs:  Data/processed/model_frame_structured.parquet (via single_lag_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/a0prime_xgb_cells.csv
-#          Data/processed/numbers_check/a0prime_xgb_summary.csv
+# Purpose: Original A0' check (A0 plus had_news): how many of the 30 fits split on had_news; reproduced by pipeline/47.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ a0prime_xgb_cells.csv, a0prime_xgb_summary.csv
 # Notes:
-# - Loads pipeline/27_covered_subsample.py via importlib for single_lag_frame
-#   and the fit configuration (params, depth grid, folds, seeds, inputs).
-# - Depth and number of trees are selected per seed x fold by validation MSE,
-#   as in pipeline/26; A0 (30 inputs) is refitted alongside for the identity
-#   check.
-# - Split counts use get_score(importance_type="weight") on the booster
-#   truncated at the selected number of trees, so discarded later rounds do
-#   not count.
-# - Per-cell CSV: one row per seed x fold for A0' (n_est, had_news split count,
-#   identical_to_A0); the summary CSV totals the 30 cells.
+# - Loads pipeline/27 via importlib for single_lag_frame and the fit configuration.
+# - Split counts from the booster truncated at the selected number of trees.
+# - A0 is refitted alongside to test whether A0' predictions are bit-identical.
 
 import importlib.util
 import sys

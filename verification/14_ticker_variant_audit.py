@@ -1,27 +1,11 @@
 # %% 14_ticker_variant_audit.py
-# Purpose: Check whether the panel firms that have zero headlines in the scoring
-#          input are ticker-spelling mismatches (e.g. BRK.B vs BRKB) that the
-#          exact-match ticker join missed, rather than firms absent from FNSPID.
-#          Read-only: writes nothing.
-# Inputs:  Data/processed/panel_final.parquet
-#          Data/processed/scoring_input.parquet
-#          Data/crsp_daily_prices.csv
-#          Data/processed/fnspid_headlines_2015_2023.csv
+# Purpose: Check whether panel firms with zero headlines in the scoring input are ticker-spelling mismatches (e.g. BRK.B vs BRKB) missed by the exact-match join, rather than firms absent from FNSPID.
+# Inputs:  Data/processed/panel_final.parquet, Data/processed/scoring_input.parquet, Data/crsp_daily_prices.csv, Data/processed/fnspid_headlines_2015_2023.csv
 # Outputs: prints only
 # Notes:
-# - Zero-headline firms = panel PERMNOs absent from scoring_input; every CRSP
-#   ticker a PERMNO carried in 2015-2023 is tested against every FNSPID symbol.
-# - Match classes: EXACT (the ticker is itself an FNSPID symbol), HIGH (equal
-#   after stripping . - / and spaces), MEDIUM (one string extends the other,
-#   >= 2 chars), LOW (edit distance 1, ticker length >= 3).
-# - A hit is plausible only if the symbol's FNSPID date range overlaps the
-#   firm's panel window (first anchor - 14 days .. last anchor). EXACT hits were
-#   already visible to the join, so they mean a timing effect, not a mapping gap.
-# - Reverse check: counts unmapped FNSPID headlines whose symbol punctuation-
-#   normalises to any panel firm's ticker (upper bound on recoverable volume).
-# - The hard-coded counts (55 zero-headline firms, 618 panel firms, 3,167,051
-#   unmapped headlines) are from the pipeline/13 run; the verdict is advisory.
-# Verification script: checks only; writes nothing to Data/
+# - Verification script: checks only; writes nothing to Data/
+# - Hard-coded counts (55 zero-headline firms, 618 panel firms) from the pipeline/13 run.
+# - Prints a NO ACTION / RULING NEEDED verdict; advisory only, exit status is always 0.
 
 import re
 import sys

@@ -1,18 +1,11 @@
 # %% 33_pairwise_arm_differences.py
-# Purpose: Original pairwise differences among the three sentiment arms (A1 vs
-#          A2, A1 vs A3, A2 vs A3) behind Table C.1, computed from the frozen
-#          per-seed R2 of pipeline/30; now reproduced by pipeline/34.
+# Purpose: Original pairwise differences among the sentiment arms behind Table C.1 (now reproduced by pipeline/34).
 # Inputs:  Data/processed/per_year_primary_r2.csv
 # Outputs: prints only
 # Notes:
-# - No refit. Differences are taken within seed from the per-seed pooled and
-#   per-year (2021-2023) R2 (pp), then mean and sd (ddof=1) across the 10
-#   seeds. Positive sign = first-listed arm has the higher R2.
-# - The CSV must hold the complete 10 seeds x 4 arms x 4 scopes grid (160
-#   rows) or the run stops.
-# - A cell is flagged when |mean| exceeds the across-seed sd.
-# - These are across-seed dispersions of R2 itself, not the pairwise DM tests
-#   (Newey-West t on weekly squared-error differences of a single run).
+# - No refit: within-seed R2 differences, mean and sd (ddof=1) over the 10 seeds.
+# - Stops unless the CSV holds the full 10 seeds x 4 arms x 4 scopes grid (160 rows).
+# - Across-seed dispersion of R2 itself, not the pairwise DM tests of a single run.
 
 import sys
 from pathlib import Path

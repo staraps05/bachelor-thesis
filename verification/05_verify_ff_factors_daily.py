@@ -1,22 +1,11 @@
 # %% 05_verify_ff_factors_daily.py
-# Purpose: Verify the Fama-French 3-factor DAILY file from Ken French's data library
-#          (source of daily RF and Mkt-RF): column names, coverage of the required
-#          2016-01-04..2023-12-29 window, business-day frequency inside that window,
-#          percent scaling, missing values and duplicate dates. Read-only: writes nothing.
+# Purpose: Verify the Fama-French 3-factor daily file (source of daily RF and Mkt-RF): columns, 2016-01-04..2023-12-29 coverage, business-day frequency, percent scaling, missing values, duplicate dates.
 # Inputs:  Data/F-F_Research_Data_Factors_daily.csv
 # Outputs: prints only
 # Notes:
+# - Verification script: checks only; writes nothing to Data/
 # - Strips the write bits of the raw file before reading, so it stays immutable.
-# - The French CSV has text lines above the table, an unnamed first (date) column,
-#   and may append an annual/monthly block below the daily data. The daily block is
-#   taken as the contiguous run of rows starting with an 8-digit date; everything
-#   after it is excluded and reported.
-# - Values are stored in PERCENT (0.05 means 0.05%); the scale check confirms this via
-#   median |Mkt-RF|, and consumers must divide by 100.
-# - Business-day frequency is checked inside the window only; the full sample has
-#   Saturday sessions (pre-1952) and multi-day gaps (1933 bank holiday, 9/11).
-# - Deterministic; pandas + stdlib only. Exit status 1 if any check fails.
-# Verification script: checks only; writes nothing to Data/
+# - Values are in percent (consumers divide by 100). Exit status 1 if any check fails.
 
 import io
 import re

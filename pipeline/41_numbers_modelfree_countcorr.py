@@ -1,32 +1,11 @@
 # %% 41_numbers_modelfree_countcorr.py
-# Purpose: Reproduce Table C.7 (Spearman correlation between each sentiment
-#          feature and the weekly headline count on covered firm-weeks) and the
-#          round-1 model-free values of Table C.5 (univariate OLS slope with
-#          week-clustered t and weekly quintile Q5-Q1 spread on covered test
-#          firm-weeks), on the double-lag frame.
-# Inputs:  Data/processed/model_frame_structured.parquet (via merge_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-#          Data/processed/scoring_input_coverage.csv (weekly headline counts)
-#          Data/processed/scoring_input.parquet (hashed only; the digest is unused)
-# Outputs: Data/processed/numbers_check/tableC5_modelfree.csv
-#          Data/processed/numbers_check/tableC7_count_corr.csv
+# Purpose: Table C.7 (Spearman of each sentiment feature with the headline count) and round-1 Table C.5, double-lag frame.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet, Data/processed/scoring_input_coverage.csv, Data/processed/scoring_input.parquet
+# Outputs: Data/processed/numbers_check/ tableC5_modelfree.csv, tableC7_count_corr.csv
 # Notes:
-# - Loads pipeline/20_seed_stability.py via importlib for merge_frame, dm_test,
-#   TARGET_FWD and YEARS. This script is itself loaded by pipeline/46, which
-#   re-runs Table C.5 single-lag (clustered_ols, SCORERS, COVERAGE_FILE) and
-#   reads the two CSVs above for comparison.
-# - Pairing is double lag (sentiment keyed on the feature week t, target is
-#   week t+1), as in pipeline/21-22; pipeline/46 is the single-lag counterpart.
-# - Table C.5 uses test-year (2021-2023) rows with had_news == 1. The slope t
-#   uses week-clustered SEs; quintiles are formed within each week by rank
-#   (ties broken by row order); the spread's t is Newey-West via dm_test (lag
-#   DM_LAG from pipeline/19).
-# - Table C.7 uses all had_news == 1 rows of every year; headline counts are
-#   merged from the coverage file and must be present exactly on the
-#   had_news == 1 rows or the run stops.
-# - Deterministic: no XGBoost, no seeds.
+# - Loads pipeline/20 via importlib; loaded by pipeline/46 (clustered_ols, constants).
+# - Double-lag pairing as in pipeline/21-22; pipeline/46 is the single-lag counterpart.
+# - Deterministic, no seeds; stops if headline counts are missing on had_news == 1 rows.
 
 import hashlib
 import importlib.util

@@ -1,27 +1,11 @@
 # %% 38_numbers_calm.py
-# Purpose: Reproduce the calm-period validation rows of Table C.2: the four-arm
-#          single-lag XGBoost comparison with a fold-1 split whose hyperparameter
-#          selection never sees 2020 (train 2018 + H1-2019, validate H2-2019,
-#          test 2021); folds 2 and 3 keep the primary structure.
-# Inputs:  Data/processed/model_frame_structured.parquet (via single_lag_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/tableC2_calm.csv
-#          Data/processed/numbers_check/tableC2_calm_perseed.csv
-#          Data/processed/numbers_check/tableC2_calm_diagnostics.csv
+# Purpose: Table C.2 calm-period rows: the four-arm single-lag run with a fold-1 split that never sees 2020.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ tableC2_calm.csv, tableC2_calm_perseed.csv, tableC2_calm_diagnostics.csv
 # Notes:
-# - Loads pipeline/27_covered_subsample.py via importlib for single_lag_frame,
-#   dm_test and the fit configuration (params, depth grid, seeds, inputs, alpha).
-# - Grid, seeds, early stopping, R2 and DM test are those of pipeline/26; only
-#   the fold-1 train/validation masks differ. The week sets of each fold must
-#   be disjoint or the run stops.
-# - Diagnostics: fold-1 cells (of 40 = 10 seeds x 4 arms) whose selected
-#   booster has a single tree, and seed x arm x fold cells (of 90 = 10 x 3
-#   sentiment arms x 3 folds) whose predictions are bit-identical to A0. Seeds
-#   whose weekly loss differences are all zero are skipped in the DM count.
-# - The main-spec A0 pooled R2 printed for comparison (-1.2992%) is from the
-#   pipeline/26 run log.
+# - Loads pipeline/27 via importlib for single_lag_frame, dm_test and the fit config.
+# - Only the fold-1 train/validation masks differ from pipeline/26; week sets disjoint.
+# - Diagnostics CSV: single-tree fold-1 cells and cells with predictions identical to A0.
 
 import importlib.util
 import sys

@@ -1,33 +1,11 @@
 # %% 28_closing_checks.py
-# Purpose: Two closing checks. Check 1: the 22 characteristics in panel_final
-#          were rank-normalised cross-sectionally per week (no time-series
-#          information, hence no look-ahead from the transform). Check 2:
-#          bias-vs-skill decomposition of the single-lag primary XGBoost
-#          predictions. Read-only: writes nothing.
-# Inputs:  Data/processed/panel_final.parquet
-#          Data/processed/panel_structured.parquet
-#          Data/processed/model_frame_structured.parquet (via single_lag_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
+# Purpose: Two closing checks: (1) the 22 panel_final characteristics were rank-normalised cross-sectionally per week; (2) bias-vs-skill decomposition of the single-lag primary XGBoost predictions.
+# Inputs:  Data/processed/panel_final.parquet, Data/processed/panel_structured.parquet, Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/27_covered_subsample.py via importlib for single_lag_frame
-#   and the fit configuration (params, depth grid, folds, inputs). Check 2 is
-#   reproduced by pipeline/43 (Table C.8).
-# - Check 1 uses panel_structured (raw) to find the originally non-missing
-#   entries, since panel_final imputed missing values to 0. In 20 sampled
-#   weeks each characteristic must span ~[-1, +1], have within-week mean ~0
-#   and Spearman(raw, transformed) = 1.
-# - Check 2 regenerates the seed-42 single-lag predictions of the four arms
-#   (pipeline/26 kept them in memory) and requires each arm's pooled R2 to
-#   match the logged pipeline/26 value within 2e-4 pp before use.
-# - Decomposition: bias = mean(yhat) - mean(y); 'R2 pts' = bias^2 * n / sum(y^2)
-#   * 100 is the part of the negative pooled R2 due to the level error alone;
-#   MSE - bias^2 is the variance/skill term.
-# - PANEL_SHA is the value recorded by pipeline/17; C26_SEED42 is from the
-#   pipeline/26 run log, verification/audit_block9_10/c5_code26_output.log.
-# Verification script: checks only; writes nothing to Data/
+# - Verification script: checks only; writes nothing to Data/
+# - Loads pipeline/27 via importlib (single_lag_frame, fit configuration).
+# - Check 2 stops unless regenerated R2 matches the pipeline/26 log (2e-4 pp); see 43.
 
 import hashlib
 import importlib.util

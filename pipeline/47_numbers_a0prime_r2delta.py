@@ -1,27 +1,11 @@
 # %% 47_numbers_a0prime_r2delta.py
-# Purpose: Reproduce the A0' statement of pipeline/40, "five of thirty fits
-#          split on had_news", and the A0' minus A0 out-of-sample R2 delta
-#          (pooled and 2021) over the ten seeds, under the single-lag pairing.
-# Inputs:  Data/processed/model_frame_structured.parquet (via single_lag_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/a0prime_r2delta_perseed.csv
-#          Data/processed/numbers_check/a0prime_r2delta_splits.csv
-#          Data/processed/numbers_check/a0prime_r2delta_summary.csv
+# Purpose: A0' (A0 plus had_news) under the single-lag pairing: fits that split on had_news and the A0' minus A0 R2 delta.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ a0prime_r2delta_perseed.csv, a0prime_r2delta_splits.csv, a0prime_r2delta_summary.csv
 # Notes:
-# - Loads pipeline/27_covered_subsample.py (single_lag_frame, fit configuration)
-#   and pipeline/30_per_year_primary.py (C26_SEED_R2, GATE_TOL, YEARS) via
-#   importlib.
-# - A0 = the 30 structured inputs; A0' = A0 plus the had_news coverage
-#   indicator, re-keyed at t+1 as in pipeline/26. No sentiment score enters.
-# - Fits: 10 seeds x 3 folds per arm, depth chosen on validation MSE with
-#   early stopping as in pipeline/26. A fit "splits on had_news" when the
-#   truncated booster (first best_iteration+1 trees) contains such a split.
-# - R2 per GKX eq. 19 with an un-demeaned denominator, pooled over the three
-#   test years and for 2021 alone; deltas are A0' minus A0 per seed, in pp.
-# - Gate: each seed's A0 pooled R2 must match the pipeline/26 log value
-#   (C26_SEED_R2 in pipeline/30) within GATE_TOL, else the run stops.
+# - Loads pipeline/27 (single_lag_frame, fit config) and 30 (gate table) via importlib.
+# - Split counts when the truncated booster (first best_iteration+1 trees) uses had_news.
+# - Gate: each seed's A0 pooled R2 must match the pipeline/26 value within GATE_TOL.
 
 import importlib.util
 import sys

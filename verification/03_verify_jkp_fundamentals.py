@@ -1,20 +1,11 @@
 # %% 03_verify_jkp_fundamentals.py
-# Purpose: Verify the JKP Global Factor Data monthly characteristics file (WRDS
-#          contrib_global_factor) for the S&P 500 universe: required ID columns,
-#          end-of-month dates, coverage against the PERMNO universe, US-only rows,
-#          panel shape, characteristic missingness and (permno, eom) uniqueness.
-#          Read-only: writes nothing.
-# Inputs:  Data/Fundamentals.csv
-#          Data/processed/sp500_permnos.txt
+# Purpose: Verify the JKP monthly characteristics file for the S&P 500 universe: ID columns, end-of-month dates, PERMNO coverage, US-only rows, panel shape, missingness, (permno, eom) uniqueness.
+# Inputs:  Data/Fundamentals.csv, Data/processed/sp500_permnos.txt
 # Outputs: prints only
 # Notes:
-# - Strips the write bits of Data/Fundamentals.csv before reading, so the raw file stays immutable.
-# - All columns are loaded (the missingness scan needs every characteristic).
-# - Universe PERMNOs absent from the JKP file are reported, not failed.
-# - "Characteristic" means any column not in META_COLS; that set is an approximation
-#   (identifiers, prices, returns, classification codes), not the published JKP list.
-# - Deterministic; pandas + stdlib only. Exit status 1 if any check fails.
-# Verification script: checks only; writes nothing to Data/
+# - Verification script: checks only; writes nothing to Data/
+# - Strips the write bits of the raw file before reading, so it stays immutable.
+# - Exit status 1 if any check fails; universe PERMNOs absent from the file only reported.
 
 import stat
 import sys

@@ -1,21 +1,11 @@
 # %% 04_verify_wg_macro.py
-# Purpose: Verify the Welch-Goyal monthly macro predictor file (extended
-#          Goyal-Welch-Zafirov version): monthly frequency over the full sample,
-#          gap-free coverage of 2015-01..2023-12, in-window missingness per column,
-#          duplicate months, and an eyeball printout of rate columns.
-#          Read-only: writes nothing.
+# Purpose: Verify the Welch-Goyal monthly macro file: monthly frequency, gap-free 2015-01..2023-12 coverage, in-window missingness, duplicate months, and an eyeball printout of rate columns.
 # Inputs:  Data/Macro_data_aggregated.csv
 # Outputs: prints only
 # Notes:
-# - Strips the write bits of Data/Macro_data_aggregated.csv before reading, so the raw file stays immutable.
-# - Column names are only whitespace-stripped, not lower-cased: WG names such as
-#   "Rfree", "AAA" and "b/m" are case-sensitive conventions.
-# - Columns with more than 20% NaN inside the window are flagged (several extended
-#   WG series are discontinued in recent years); flags do not fail the run.
-# - Rates (tbl, Rfree, AAA, ...) are expected as decimals (0.04 = 4%); the eyeball
-#   rows exist to confirm this by inspection, there is no automatic check.
-# - Deterministic; pandas + stdlib only. Exit status 1 if any check fails.
-# Verification script: checks only; writes nothing to Data/
+# - Verification script: checks only; writes nothing to Data/
+# - Strips the write bits of the raw file before reading, so it stays immutable.
+# - Exit status 1 if any check fails; columns with >20% in-window NaN are only flagged.
 
 import stat
 import sys

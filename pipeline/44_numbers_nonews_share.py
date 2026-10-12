@@ -1,22 +1,10 @@
 # %% 44_numbers_nonews_share.py
-# Purpose: Compute the share of firm-weeks without news (had_news == 0), the
-#          44 per cent quoted in the text, per year and pooled over 2021-23,
-#          on the full panel and on the single-lag test rows.
-# Inputs:  Data/processed/features_lm.parquet (full panel, had_news column)
-#          Data/processed/model_frame_structured.parquet (via merge_frame)
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/nonews_share.csv
+# Purpose: Share of firm-weeks without news (had_news == 0), per year and pooled 2021-23, full panel and test rows.
+# Inputs:  Data/processed/features_lm.parquet, Data/processed/model_frame_structured.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ nonews_share.csv
 # Notes:
-# - Loads pipeline/27_covered_subsample.py via importlib for single_lag_frame
-#   and SENT_FILES.
-# - Frame (i): the full 157,897-row panel from features_lm.parquet, had_news
-#   keyed at target_week; shares per year 2018-2023, pooled 2021-2023 and
-#   over all years.
-# - Frame (ii): the single-lag frame's test rows (week_anchor years 2021-2023,
-#   78,056 rows), i.e. the rows the four arms are evaluated on; had_news is
-#   re-attached from the week-(t+1) key there.
-# - Both row counts are asserted; the run stops on a mismatch.
+# - Loads pipeline/27 via importlib for single_lag_frame and SENT_FILES.
+# - Frames: the 157,897-row panel and the 78,056 single-lag test rows; counts asserted.
 
 import importlib.util
 import sys

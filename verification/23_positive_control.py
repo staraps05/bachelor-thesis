@@ -1,27 +1,11 @@
 # %% 23_positive_control.py
-# Purpose: Positive control for the sentiment merge: test the sentiment features
-#          against the contemporaneous week-t return, where a signal must appear
-#          if the features are attached to the correct firm and week.
-#          Read-only: writes nothing.
-# Inputs:  Data/processed/model_frame_structured.parquet (via merge_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
+# Purpose: Positive control for the sentiment merge: test the sentiment features against the contemporaneous week-t return, where a signal must appear if they are attached to the correct firm-week.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/20_seed_stability.py via importlib for merge_frame (reads
-#   and SHA-checks the inputs) and dm_test. This script is itself loaded by
-#   pipeline/24 for clustered_ols, quintile_spread, TARGET_T and SCORERS.
-# - Pairing: the score at key t aggregates headlines of the Mon-Sun window
-#   preceding anchor t; ret_excess at key t is that week's return.
-#   ret_excess_fwd is not used.
-# - Tests on had_news==1 rows: (a) signed corr, (b) |score| vs |ret|, (c) weekly
-#   Q5-Q1 spread with NW t; (d) on all rows, |ret| in news vs no-news weeks.
-# - Off-by-one probe: score_{t-1}, score_t and score_{t+1} against ret_t;
-#   score_t is expected to be the strongest pairing for every scorer.
-# - PASS requires (a), (c), (d) positive with |t| >= T_SIG = 2 and the probe
-#   expectation for every scorer; otherwise FLAG, to be treated as a bug.
-# Verification script: checks only; writes nothing to Data/
+# - Verification script: checks only; writes nothing to Data/
+# - Loads pipeline/20 via importlib (merge_frame SHA-checks the inputs; dm_test).
+# - Prints PASS or FLAG (a FLAG is treated as a bug); pipeline/24 loads its helpers.
 
 import importlib.util
 import math

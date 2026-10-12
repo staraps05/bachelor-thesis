@@ -1,29 +1,11 @@
 # %% 42_numbers_daily_decay.py
-# Purpose: Reproduce Table C.6 (persistence of the sentiment-return relation at
-#          daily resolution, h = 0..5 trading days after the headline) for LM,
-#          FinBERT and FinGPT and save it as CSV. Reproduces pipeline/29.
-# Inputs:  Data/processed/scoring_input.parquet
-#          Data/colab/finbert_scores.csv
-#          Data/colab/fingpt_scores.csv
-#          Data/Loughran-McDonald_MasterDictionary_*.csv (last match by name)
-#          Data/processed/features_lm.parquet
-#          Data/crsp_daily_prices.csv
-#          Data/F-F_Research_Data_Factors_daily.csv
-# Outputs: Data/processed/numbers_check/tableC6_persistence.csv
+# Purpose: Table C.6: persistence of the sentiment-return relation at daily horizons h = 0..5; reproduces pipeline/29.
+# Inputs:  Data/processed/scoring_input.parquet, Data/colab/finbert_scores.csv, Data/colab/fingpt_scores.csv, Data/Loughran-McDonald_MasterDictionary_*.csv, Data/processed/features_lm.parquet, Data/crsp_daily_prices.csv, Data/F-F_Research_Data_Factors_daily.csv
+# Outputs: Data/processed/numbers_check/ tableC6_persistence.csv
 # Notes:
-# - Loads pipeline/15_score_lm.py (TOKEN_RE, DICT_GLOB) and
-#   pipeline/sentiment_aggregation.py (aggregate_scores) via importlib.
-# - Input SHA256s are checked against the values recorded in pipeline/29. LM
-#   scores are regenerated per headline with pipeline/15's recipe; the run
-#   stops unless their weekly re-aggregation reproduces features_lm.parquet
-#   bit-exactly. FinBERT/FinGPT scores are p_pos - p_neg from the Colab CSVs.
-# - Scores are averaged per firm-day. h = 0 pairs a headline day with its own
-#   session (non-trading dates dropped); h >= 1 pairs it with the h-th session
-#   strictly after the headline date, so weekend headlines roll forward.
-# - Per (scorer, h): pooled OLS slope (% per unit score) with date-clustered t,
-#   and the mean daily Q5-Q1 spread (% per day, days with >= MIN_FIRMS_DAY = 20
-#   firms) with a Newey-West t at NW_LAG = 5.
-# - Univariate: no weekly lag structure and no structured baseline.
+# - Loads pipeline/15 (TOKEN_RE, DICT_GLOB) and sentiment_aggregation.py via importlib.
+# - Input SHA256s checked (pipeline/29); stops unless LM regeneration matches features_lm.
+# - Univariate daily test: no weekly lag structure and no structured baseline.
 
 import hashlib
 import importlib.util

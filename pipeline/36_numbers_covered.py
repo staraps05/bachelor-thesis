@@ -1,26 +1,11 @@
 # %% 36_numbers_covered.py
-# Purpose: Re-run the four-arm single-lag comparison on the high-coverage firm
-#          subsample at thresholds 0.50, 0.60 and 0.70 and save the per-arm
-#          delta vs A0 behind the covered rows of Table C.2 (0.60 is primary).
-# Inputs:  Data/processed/model_frame_structured.parquet (via single_lag_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/tableC2_covered.csv
-#          Data/processed/numbers_check/tableC2_covered_perseed.csv
-#          Data/processed/numbers_check/tableC2_covered_dm060.csv
+# Purpose: Four-arm single-lag run on the high-coverage subsample (thresholds 0.50, 0.60, 0.70): Table C.2 covered rows.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ tableC2_covered.csv, tableC2_covered_perseed.csv, tableC2_covered_dm060.csv
 # Notes:
-# - Loads pipeline/27_covered_subsample.py via importlib and reuses its
-#   single_lag_frame, fit_all and dm_test; the arm input lists are assigned to
-#   c27.ARMS_DEF because fit_all reads that module global.
-# - Firm filter: a firm qualifies when its mean had_news over its 2021-2023
-#   weeks is >= the threshold; all years of qualifying firms are kept.
-# - Deltas are within-seed pooled R2 differences (pp) vs A0; mean and sd
-#   (ddof=1) over 10 seeds; "beats_a0_of_10" counts seeds with delta > 0.
-# - DM tests (Newey-West lag 4, A0 minus arm weekly mean squared errors) run
-#   at the 0.60 threshold only; Sig = seeds with p < ALPHA and stat > 0.
-# - No reproduction gate (the row set differs from the full panel); fit_all
-#   stops if any seed's |A0 pooled R2| exceeds 0.05.
+# - Loads pipeline/27 (single_lag_frame, fit_all, dm_test) via importlib; sets ARMS_DEF.
+# - No reproduction gate (different row set); stops if any seed's |A0 R2| exceeds 0.05.
+# - DM tests run at the 0.60 threshold only; 0.60 is the primary row.
 
 import importlib.util
 import sys

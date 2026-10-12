@@ -1,21 +1,11 @@
 # %% 17a_export_for_colab.py
-# Purpose: Confirm that the Colab export Data/colab/finbert_input.csv is unchanged
-#          (SHA256 and row count) so the FinGPT notebook can reuse the FinBERT
-#          upload, and print the Drive instructions for Colab/17b.
-#          Read-only: writes nothing.
+# Purpose: Confirm the Colab export finbert_input.csv is unchanged (SHA256 and row count) so the FinGPT notebook can reuse the FinBERT upload, and print the Drive instructions for Colab/17b.
 # Inputs:  Data/colab/finbert_input.csv
 # Outputs: prints only
 # Notes:
-# - The FinGPT arm scores the same scorer-agnostic export (hid, PERMNO,
-#   target_week, headline) that pipeline/16a wrote for FinBERT; no new file.
-# - EXPORT_SHA and EXPORT_ROWS (796,038) are the values recorded when
-#   pipeline/16a wrote the file.
-# - Drive layout expected by Colab/17b: input MyDrive/thesis_finbert/
-#   finbert_input.csv (reused from the FinBERT run, hash-asserted by 17b),
-#   output MyDrive/thesis_fingpt/.
-# - Next: run Colab/17b_score_fingpt.ipynb, download fingpt_scores.csv into
-#   Data/colab/, then run pipeline/17c.
-# Verification script: checks only; writes nothing to Data/
+# - Verification script: checks only; writes nothing to Data/
+# - EXPORT_SHA and EXPORT_ROWS (796,038) were recorded when pipeline/16a wrote the file.
+# - Exits with STOP on a missing file, SHA or row-count mismatch; then run colab/17b.
 
 import hashlib
 import sys

@@ -1,34 +1,11 @@
 # %% 25_event_spot_check.py
-# Purpose: Event-level spot check of actual panel rows against real-world events:
-#          target moments and units, named-event returns, and headline-to-
-#          firm-week attachment read by hand. Read-only: writes nothing.
-# Inputs:  Data/processed/panel_final.parquet
-#          Data/processed/scoring_input.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-#          Data/membership_file.csv
-#          Data/F-F_Research_Data_Factors_daily.csv
+# Purpose: Event-level spot check of panel rows against real-world events: target moments and units, named-event returns, and headline-to-firm-week attachment read by hand.
+# Inputs:  Data/processed/panel_final.parquet, Data/processed/scoring_input.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet, Data/membership_file.csv, Data/F-F_Research_Data_Factors_daily.csv
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/08_build_skeleton.py via importlib for week_anchor_map (the
-#   week definition) and pipeline/19_four_arm_comparison.py for SENT_FILES
-#   (feature paths + SHA256s). PANEL_SHA and SCORING_SHA are the values
-#   recorded by pipeline/17 and pipeline/13.
-# - Part A: weekly ret_excess moments (annualised mean 5-15%, vol 20-35%),
-#   weekly RF recompounded from the FF daily file (must be decimal), yearly
-#   signs (2018 <= 0, 2019 > 0, 2022 < 0, 2023 > 0; 2020 most volatile).
-# - Part B event windows: META week of 2022-02-03 (-30..-15%), SIVB week of
-#   2023-03-08 (<= -40%), NFLX week of 2022-04-20 (-45..-20%); cross-sectional
-#   mean < -8% in the week of 2020-03-16 and > +5% in the week of 2020-04-06.
-# - Part C: every scored headline must lie in the Mon-Sun window preceding its
-#   target_week, so an event's coverage week is the week after it. META (absent
-#   from FNSPID), SIVB (coverage ends 2020-06-09) and NFLX (scrape horizon
-#   ~June 2020) are expected zero-filled with had_news=0, not flagged; the
-#   COVID-crash coverage week must score negative on FinBERT and FinGPT.
-# - Random attachment sample: 2 firm-weeks per year with >= 6 headlines,
-#   distinct firms, seed 42.
-# Verification script: checks only; writes nothing to Data/
+# - Verification script: checks only; writes nothing to Data/
+# - Loads pipeline/08 (week_anchor_map) and 19 (SENT_FILES with SHA256s) via importlib.
+# - PANEL_SHA/SCORING_SHA from pipeline/17 and 13 (STOP on mismatch); prints PASS or FLAG.
 
 import hashlib
 import importlib.util

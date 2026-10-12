@@ -1,33 +1,11 @@
 # %% 34_numbers_primary_table41.py
-# Purpose: Reproduce the primary single-lag four-arm XGBoost run and save the
-#          full-precision sources behind Table 4.1 (Panel A R2 and SD, Panel B
-#          deltas vs A0, DM tests, Sig counts) and Table C.1 (pairwise arm
-#          differences).
-# Inputs:  Data/processed/model_frame_structured.parquet (via single_lag_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/table41_r2_by_seed.csv
-#          Data/processed/numbers_check/table41_panelAB_summary.csv
-#          Data/processed/numbers_check/table41_dm_by_seed.csv
-#          Data/processed/numbers_check/table41_dm_summary.csv
-#          Data/processed/numbers_check/tableC1_pairwise.csv
+# Purpose: Reproduce the primary single-lag four-arm run and save the sources behind Table 4.1 and Table C.1.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ table41_r2_by_seed.csv, table41_panelAB_summary.csv, table41_dm_by_seed.csv, table41_dm_summary.csv, tableC1_pairwise.csv
 # Notes:
-# - Loads pipeline/27_covered_subsample.py via importlib for single_lag_frame,
-#   dm_test and the fit configuration (params, depth grid, folds, seeds, input
-#   lists), and pipeline/30_per_year_primary.py for YEARS, ARM_ORDER and the
-#   reference per-seed R2 of the reproduction gate.
-# - Gate: every per-seed pooled R2 (40 seed x arm cells) must match the
-#   reference from the pipeline/26 run log within GATE_TOL, else the run stops
-#   before anything is written.
-# - R2 per GKX eq. 19 with an un-demeaned denominator: per year it uses that
-#   year's own sum(y^2); pooled is the ratio of the summed SSE and sum(y^2).
-# - DM test: Newey-West (lag 4) t on the weekly cross-sectional mean squared-
-#   error difference A0 minus arm, per seed. Sig = seeds with p < ALPHA and
-#   stat > 0 (signed); an unsigned count (p < ALPHA only) is stored alongside.
-# - Deltas and pairwise differences are within-seed R2 differences in pp,
-#   mean and sd (ddof=1) over seeds; "beats_a0_of_10" counts seeds with
-#   delta > 0.
+# - Loads pipeline/27 (single_lag_frame, dm_test, fit config) and 30 via importlib.
+# - Gate: all 40 per-seed pooled R2 cells must match the pipeline/26 log within GATE_TOL.
+# - Sig = seeds with DM p < ALPHA and stat > 0; deltas are within-seed R2 diffs in pp.
 
 import importlib.util
 import sys

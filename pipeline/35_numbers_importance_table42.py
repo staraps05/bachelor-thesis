@@ -1,30 +1,11 @@
 # %% 35_numbers_importance_table42.py
-# Purpose: Reproduce the A0 (structured) and A2 (+FinBERT) single-lag fits and
-#          save the full-precision total-gain importance shares behind Table 4.2:
-#          per-feature shares, block sums and the sentiment-block members.
-# Inputs:  Data/processed/model_frame_structured.parquet (via single_lag_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/numbers_check/table42_importance_perfeature.csv
-#          Data/processed/numbers_check/table42_block_sums.csv
-#          Data/processed/numbers_check/table42_sentiment_members.csv
+# Purpose: Reproduce the A0 and A2 single-lag fits and save the total-gain importance shares behind Table 4.2.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/numbers_check/ table42_importance_perfeature.csv, table42_block_sums.csv, table42_sentiment_members.csv
 # Notes:
-# - Loads pipeline/27_covered_subsample.py via importlib for single_lag_frame
-#   and the fit configuration, pipeline/30_per_year_primary.py for the
-#   reference per-seed R2 of the gate, and pipeline/17_pre_model_integrity.py
-#   for the CHARS_22 / MACRO_8 block membership.
-# - Gate: the pooled R2 of every A0 and A2 seed (20 cells) must match the
-#   reference from the pipeline/26 run log within GATE_TOL, else the run stops.
-# - Importance = a feature's share of total gain in the booster truncated at
-#   the selected iteration (bst[0:best_iteration+1]), as in Table 4.2; the
-#   untruncated A0 share is stored alongside for comparison.
-# - Shares are averaged over the 3 folds within seed, then mean and sd (ddof=1)
-#   across the 10 seeds; block sums and their sd are formed per seed the same
-#   way.
-# - Per-feature rows are ordered by A0 share; the A2 column reports the same
-#   30 structured inputs, the 5 sentiment inputs (4 FinBERT + had_news) go to
-#   the members CSV.
+# - Loads pipeline/27 (frame, fit config), 30 (gate table) and 17 (blocks) via importlib.
+# - Gate: 20 A0 and A2 per-seed pooled R2 cells must match the pipeline/26 log (GATE_TOL).
+# - Shares from the booster truncated at the selected iteration; untruncated A0 kept too.
 
 import importlib.util
 import sys
