@@ -10,6 +10,7 @@ Author: Ruben Stark. University of St. Gallen, 2026. Supervisor: Prof. Dr. Despo
 - `pipeline/colab/`: the two GPU scoring notebooks (FinBERT, FinGPT) for Google Colab.
 - `verification/`: read-only checks of raw inputs and intermediate files; they print and write nothing except `verification/07`.
 - `archive/`: an early Colab pilot of the FinGPT scorer, not part of the pipeline.
+  - `archive/fingpt_sentiment_pilot.py`: Colab pilot of the FinGPT scorer; not part of the pipeline.
 - `results/`: the aggregate tables behind the thesis tables (CSV, no firm-level data); see Data below.
 
 ## Pipeline in run order
@@ -91,7 +92,7 @@ Verification scripts (`verification/`)
 | `Data/fnspid_nasdaq_news_raw.csv` | FNSPID news headlines (22 GB) | FNSPID public dataset | public; SHA-256 `1a7a3eb8e6b97ec19f286f2cfca3371542bddb272ab1eb8f36e33ad98fa5c4da` |
 | `Data/Loughran-McDonald_MasterDictionary_1993-2025.csv` | Loughran-McDonald Master Dictionary | sraf.nd.edu | academic licence, not included |
 
-Derived files written by the pipeline into `Data/processed/`: `sp500_permnos.txt`, `fnspid_headlines_2015_2023.csv`, `skeleton.parquet`, `panel_target.parquet`, `panel_blockA.parquet`, `f6_crosscheck.csv`, `panel_structured.parquet`, `panel_final.parquet` and its manifest, `scoring_input.parquet`, `scoring_input_coverage.csv`, `features_lm.parquet`, `features_finbert.parquet`, `features_fingpt.parquet`, `model_frame_structured.parquet` and its manifest, `baseline_predictions.parquet`, `predictions_A0_structured.parquet` to `predictions_A3_fingpt.parquet`, `per_year_primary_r2.csv`, and the `numbers_check/` tables. `Data/colab/` holds `finbert_input.csv`, `finbert_scores.csv` and `fingpt_scores.csv`. `results/` contains only the aggregate tables from `numbers_check/`; it holds no prices, returns or firm-level panel rows.
+Derived files written by the pipeline into `Data/processed/`: `sp500_permnos.txt`, `fnspid_headlines_2015_2023.csv`, `skeleton.parquet`, `panel_target.parquet`, `panel_blockA.parquet`, `f6_crosscheck.csv`, `panel_structured.parquet`, `panel_final.parquet` and its manifest, `scoring_input.parquet`, `scoring_input_coverage.csv`, `features_lm.parquet`, `features_finbert.parquet`, `features_fingpt.parquet`, `model_frame_structured.parquet` and its manifest, `baseline_predictions.parquet`, `predictions_A0_structured.parquet` to `predictions_A3_fingpt.parquet`, `per_year_primary_r2.csv`, and the `numbers_check/` tables. `Data/colab/` holds `finbert_input.csv`, `finbert_scores.csv` and `fingpt_scores.csv`. `results/` contains only the aggregate tables from `numbers_check/`; it holds no prices, returns or other licensed values; two tables list security identifiers (PERMNO, ticker, SIC code) only.
 
 ## Software versions
 

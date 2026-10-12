@@ -57,7 +57,7 @@ FRAME_FILE, FRAME_SHA = _b18.FRAME_FILE, _b18.FRAME_SHA
 N_ROWS, N_COLS = _b18.N_ROWS, _b18.N_COLS
 r2_oos = _b18.r2_oos
 
-# SHA256 values as recorded in docs/decisions_log.md
+# values from the recorded run log
 SENT_FILES = {
     "lm": (PROC / "features_lm.parquet",
            "b07a8f1e236d34d6d68dabd1038d1dfc632f6a2b220f4ccf9e3af88e0a7d50a3"),
@@ -67,7 +67,7 @@ SENT_FILES = {
                "8cc910caf14633244601a56c19fffaaad47707705e942e6c15f4ce6beb034710"),
 }
 
-# values from the pipeline/18 run log (docs/decisions_log.md)
+# values from the recorded run log
 BASE_R2 = -0.015412
 BASE_PRED_SHA = "87418301a27263ce8f147d961556bf296bedc601269c74c939b4d753a768ec26"
 

@@ -1,6 +1,4 @@
 Data/
-docs/
-reference/
 git_baseline_manifest.md
 __pycache__/
 *.pyc

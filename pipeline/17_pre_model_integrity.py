@@ -16,7 +16,6 @@
 # - The |corr| > 0.10 leakage tripwire applies to the 22 characteristics only;
 #   macro predictors above it (svar) are reported as [INFO].
 # - The output and its manifest are derived and regenerable; the manifest text
-#   is a fixed string literal (it still cites the old Code/17 path and date).
 
 import hashlib
 import sys
