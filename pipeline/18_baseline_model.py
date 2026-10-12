@@ -1,25 +1,11 @@
 # %% 18_baseline_model.py
-# Purpose: Fit the structured-only XGBoost baseline (arm A0) on the predictive
-#          model frame with expanding-window folds, save the test predictions,
-#          and report pooled and per-year out-of-sample R^2 with sanity checks.
+# Purpose: Fit the structured-only XGBoost baseline (arm A0) with expanding-window folds and save test predictions.
 # Inputs:  Data/processed/model_frame_structured.parquet
 # Outputs: Data/processed/baseline_predictions.parquet
 # Notes:
-# - Column lists (KEYS, TARGET_FWD, CHARS_22, MACRO_8, INPUTS_30) are loaded
-#   from pipeline/17_pre_model_integrity.py via importlib; this script is in
-#   turn loaded by pipeline/19_four_arm_comparison.py for its fit configuration.
-# - Folds (train | val | test years): [2018-19 | 2020 | 2021],
-#   [2018-20 | 2021 | 2022], [2018-21 | 2022 | 2023]. Splits are by feature-week
-#   year; the target ret_excess_fwd is the week-(t+1) excess return.
-# - Per fold, max_depth in {2, 3, 4} is selected by minimum validation MSE; each
-#   depth is trained with early stopping (50 rounds, cap 2000) on validation
-#   RMSE. The other hyperparameters are fixed (FIXED_PARAMS, seed 42).
-# - R^2 is out-of-sample against a zero forecast (GKX eq. 19, denominator not
-#   demeaned), pooled over 2021-23 and per test year.
-# - The frame's SHA256 and shape are checked against hard-coded constants; the
-#   script stops on mismatch or if the output exists write-protected. Sanity
-#   gates (|R^2| thresholds, dominant accounting ratio, |yhat| bound) are
-#   printed as FLAG in the final verdict rather than stopping the run.
+# - Loads pipeline/17 via importlib (column lists); loaded by pipeline/19 for fit config.
+# - FOLDS train|val|test: 18-19|20|21, 18-20|21|22, 18-21|22|23 (years); seed 42.
+# - Stops on frame SHA256/shape mismatch or write-protected output; sanity gates only FLAG
 
 import hashlib
 import importlib.util

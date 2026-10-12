@@ -1,32 +1,11 @@
 # %% 20_seed_stability.py
-# Purpose: Re-run the four-arm comparison of pipeline/19 with colsample_bytree
-#          1.0 instead of 0.8 across ten seeds and report how stable the pooled,
-#          per-year and DM results are under seed variation. Also the
-#          configuration supplier for the later model scripts.
-# Inputs:  Data/processed/model_frame_structured.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
+# Purpose: Re-run pipeline/19 with colsample_bytree 1.0 across ten seeds; configuration supplier for later scripts.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - The whole configuration (fit parameters, folds, input lists, feature files
-#   with SHA256s, DM_LAG, ALPHA) is loaded from pipeline/19_four_arm_comparison.py
-#   via importlib; merge_frame() repeats pipeline/19's merge with the same
-#   checks. This script is in turn loaded by pipeline/21, 22, 26, 27, 30, 39,
-#   41 and verification/23 for FIXED_PARAMS, AMENDMENT, SEEDS, FOLDS etc.
-# - AMENDMENT = {"colsample_bytree": 1.0} is the only change to FIXED_PARAMS.
-#   With colsample < 1 the per-tree column draw depends on the column count, so
-#   the three 35-column arms drew identically to each other and differently from
-#   30-column A0; with 1.0 arm differences can only come from the sentiment
-#   features. Early stopping is unchanged.
-# - SEEDS = 42..51. Per seed and arm the fold loop is that of pipeline/18
-#   (max_depth {2, 3, 4} by minimum validation MSE, early stopping 50, cap
-#   2000). DMatrices are built once because they do not depend on the seed.
-# - Stability statistics are the sample SD (ddof=1) over seeds; deltas vs A0
-#   are taken within seed. DM tests use pipeline/19's statistic (NW lag 4),
-#   one per seed; p-values are two-sided normal.
-# - The script stops on SHA256/shape mismatch of an input or if any seed's A0
-#   has |pooled R^2| > 0.05.
+# - Loads pipeline/19 via importlib; loaded by 21, 22, 26, 27, 30, 39, 41, verification/23
+# - Defines AMENDMENT = {"colsample_bytree": 1.0} (sole FIXED_PARAMS change); SEEDS 42-51.
+# - Stops on input SHA256/shape mismatch or if any seed's A0 has |pooled R^2| > 0.05.
 
 import hashlib
 import importlib.util

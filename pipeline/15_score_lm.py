@@ -1,27 +1,11 @@
 # %% 15_score_lm.py
-# Purpose: Score every headline in the scoring input with the Loughran-McDonald
-#          dictionary and aggregate to firm-week features (lm_mean, lm_std,
-#          lm_range, lm_kurt, had_news) on the full panel key set.
-# Inputs:  Data/Loughran-McDonald_MasterDictionary_*.csv (last match by name,
-#          e.g. Data/Loughran-McDonald_MasterDictionary_1993-2025.csv)
-#          Data/processed/scoring_input.parquet
-#          Data/processed/scoring_input_coverage.csv
-#          Data/processed/panel_final.parquet
+# Purpose: Score headlines with the LM dictionary, aggregate to firm-week lm_* + had_news.
+# Inputs:  Data/Loughran-McDonald_MasterDictionary_*.csv (last match by name), Data/processed/scoring_input.parquet, Data/processed/scoring_input_coverage.csv, Data/processed/panel_final.parquet
 # Outputs: Data/processed/features_lm.parquet
 # Notes:
-# - Tokenisation: uppercase the headline, split on non-letters (tokens are [A-Z]+
-#   runs), exact dictionary match, no stemming or stopword removal. A word is on
-#   the Negative/Positive list when its column value is > 0.
-# - Per-headline score s = (n_pos - n_neg) / (n_pos + n_neg); s = 0 when the
-#   headline contains no LM word.
-# - Aggregation runs through pipeline/sentiment_aggregation.py (uniform weights,
-#   ddof=0, kurtosis guard); its unit tests run first. Firm-weeks without
-#   headlines get all four features = 0 and had_news = 0.
-# - The scoring-input SHA256 and row count are checked against hard-coded
-#   constants; the script stops on mismatch.
-# - The output is write-protected only when every check passes; the script stops
-#   if a write-protected output already exists.
-
+# - Aggregation runs through pipeline/sentiment_aggregation.py; its unit tests run first.
+# - Scoring-input SHA256 and row count must match hard-coded constants; stops on mismatch.
+# - Output is write-protected only when all checks pass; stops if a protected one exists.
 import hashlib
 import re
 import stat

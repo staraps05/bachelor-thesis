@@ -1,15 +1,11 @@
 # %% 01_verify_sp500_membership.py
-# Purpose: Verify the CRSP S&P 500 daily membership export from WRDS (TSLA inclusion
-#          date, FB->META ticker switch, plausible universe size) and write the sorted
-#          PERMNO universe used for the subsequent CRSP price pull.
+# Purpose: Verify the CRSP S&P 500 daily membership export (TSLA inclusion, FB->META
+#          switch, universe size) and write the sorted PERMNO universe for the price pull.
 # Inputs:  Data/membership_file.csv
 # Outputs: Data/processed/sp500_permnos.txt
 # Notes:
-# - Strips the write bits of Data/membership_file.csv before reading, so the raw file stays immutable.
-# - The PERMNO file is written even when a spot-check fails; the exit status is 1 in that case.
-# - A unique-PERMNO count outside 700-1000 but inside 500-1100 is flagged for review, not failed.
-# - Deterministic; pandas + stdlib only.
-
+# - Strips write bits of Data/membership_file.csv before reading (raw stays immutable).
+# - PERMNO file is written even when a spot-check fails; exit status is then 1.
 import stat
 import sys
 from datetime import date

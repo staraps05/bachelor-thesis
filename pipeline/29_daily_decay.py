@@ -1,28 +1,11 @@
 # %% 29_daily_decay.py
-# Purpose: Diagnostic on how fast per-headline sentiment predicts excess returns
-#          at daily resolution, for horizons h = 0..5 trading days after the
-#          headline date, with LM, FinBERT and FinGPT scores. Univariate only.
-# Inputs:  Data/processed/scoring_input.parquet
-#          Data/colab/finbert_scores.csv
-#          Data/colab/fingpt_scores.csv
-#          Data/Loughran-McDonald_MasterDictionary_*.csv (last match by name)
-#          Data/processed/features_lm.parquet
-#          Data/crsp_daily_prices.csv
-#          Data/F-F_Research_Data_Factors_daily.csv
+# Purpose: Univariate diagnostic of how fast per-headline sentiment (LM, FinBERT, FinGPT) predicts
+#          daily excess returns at horizons h = 0..5 trading days after the headline date.
+# Inputs:  Data/processed/scoring_input.parquet, Data/colab/finbert_scores.csv, Data/colab/fingpt_scores.csv, Data/Loughran-McDonald_MasterDictionary_*.csv, Data/processed/features_lm.parquet, Data/crsp_daily_prices.csv, Data/F-F_Research_Data_Factors_daily.csv
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/15_score_lm.py (TOKEN_RE, DICT_GLOB) and
-#   pipeline/sentiment_aggregation.py (aggregate_scores) via importlib.
-# - LM scores are regenerated per headline with pipeline/15's recipe; the run
-#   stops unless their weekly re-aggregation reproduces features_lm.parquet
-#   bit-exactly. FinBERT/FinGPT scores are p_pos - p_neg from the Colab CSVs.
-# - Scores are averaged per firm-day. h = 0 pairs a headline day with its own
-#   session (non-trading dates dropped); h >= 1 pairs it with the h-th session
-#   strictly after the headline date, so weekend headlines roll forward.
-# - Two statistics per (scorer, h): pooled OLS slope with date-clustered t, and
-#   the daily Q5-Q1 quintile spread (days with >= 20 firms) with a NW(5) t.
-# - The test is univariate: it says nothing about value added on top of the
-#   structured baseline.
+# - Loads pipeline/15 and pipeline/sentiment_aggregation.py via importlib.
+# - Gate: regenerated LM scores must re-aggregate to features_lm.parquet bit-exactly.
 
 import hashlib
 import importlib.util

@@ -1,29 +1,11 @@
 # %% 16c_finbert_aggregate_freeze.py
-# Purpose: Validate the Colab-scored FinBERT probabilities, join them to the
-#          scoring input on hid, score each headline as s = p_pos - p_neg and
-#          aggregate to firm-week features (finbert_mean, finbert_std,
-#          finbert_range, finbert_kurt, had_news) on the full panel key set.
-# Inputs:  Data/colab/finbert_scores.csv
-#          Data/processed/scoring_input.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/panel_final.parquet
-#          Data/Loughran-McDonald_MasterDictionary_1993-2025.csv
+# Purpose: Validate the Colab-scored FinBERT probabilities and aggregate them to firm-week features.
+# Inputs:  Data/colab/finbert_scores.csv, Data/processed/scoring_input.parquet, Data/processed/features_lm.parquet, Data/processed/panel_final.parquet, Data/Loughran-McDonald_MasterDictionary_1993-2025.csv
 # Outputs: Data/processed/features_finbert.parquet
 # Notes:
-# - Checks on finbert_scores.csv: exactly 796,038 rows; hid unique and complete;
-#   probabilities in [0, 1]; each row sums to 1 +- 1e-4; no NaNs. hid is the
-#   positional index of the scoring-input parquet, as built by
-#   pipeline/16a_export_for_colab.py.
-# - Aggregation runs through pipeline/sentiment_aggregation.py (uniform weights,
-#   ddof=0, kurtosis guard); its unit tests run first. No-news firm-weeks get all
-#   four features = 0 and had_news = 0.
-# - had_news must equal the LM arm's column exactly (it depends only on
-#   coverage); the script stops otherwise.
-# - The LM headline score is recomputed here (same rule as
-#   pipeline/15_score_lm.py) only for the cross-scorer correlation report and is
-#   checked against the LM arm's zero share (0.7731) and nonzero mean (0.0536).
-# - SHA256 constants for scoring_input.parquet and features_lm.parquet are
-#   checked; the output is write-protected only when every check passes.
+# - Gates: exactly 796,038 score rows; SHA256 of scoring_input and features_lm checked.
+# - Imports pipeline/sentiment_aggregation.py (unit tests first); had_news must equal LM.
+# - The output is write-protected only when every check passes.
 
 import hashlib
 import re

@@ -1,18 +1,11 @@
 # %% 09_build_target.py
-# Purpose: Compute the weekly excess-return target (ret_excess) for every skeleton row
-#          and save it together with the n_days diagnostic; no features.
-# Inputs:  Data/processed/skeleton.parquet
-#          Data/crsp_daily_prices.csv (PERMNO, DlyCalDt, DlyRet, DlyCap)
-#          Data/F-F_Research_Data_Factors_daily.csv (RF, Mkt-RF)
-#          Data/membership_file.csv (tickers, report annotation only)
-# Outputs: Data/processed/panel_target.parquet (PERMNO, week_anchor, ret_excess, n_days)
+# Purpose: Weekly excess-return target ret_excess and n_days diagnostic per skeleton row.
+# Inputs:  Data/processed/skeleton.parquet, Data/crsp_daily_prices.csv, Data/F-F_Research_Data_Factors_daily.csv, Data/membership_file.csv
+# Outputs: Data/processed/panel_target.parquet
 # Notes:
-# - ret_w = prod(1+DlyRet) - 1 over the firm's non-missing daily returns in the anchor's Mon-Sun week; rf_w = prod(1+RF) - 1 over the same week's trading days (FF RF divided by 100); ret_excess = ret_w - rf_w.
-# - Skeleton rows whose firm-week has zero non-missing return days (ret_excess NaN) are dropped; nothing else is filtered.
-# - Loads pipeline/08_build_skeleton.py via importlib to reuse week_anchor_map(), so both scripts share one week definition.
-# - Byte-identical duplicate CRSP rows are dropped (146 expected); conflicting duplicates abort.
-# - Expects the skeleton to have exactly 157,901 rows. The VW-panel-vs-FF-market correlation (> 0.99) is a pass/fail check; the EW correlation is printed as information only.
-
+# - Loads pipeline/08_build_skeleton.py via importlib to reuse week_anchor_map().
+# - Expects 157,901 skeleton rows; 146 byte-identical duplicate CRSP rows are dropped.
+# - Rows with no valid return day are dropped; VW-vs-FF-market corr > 0.99 is pass/fail.
 import importlib.util
 import io
 import re

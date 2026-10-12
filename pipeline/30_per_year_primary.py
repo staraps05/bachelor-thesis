@@ -1,27 +1,11 @@
 # %% 30_per_year_primary.py
-# Purpose: Regenerate the primary single-lag four-arm XGBoost run and compute
-#          per-year (2021, 2022, 2023) out-of-sample R2 next to the pooled
-#          values, per seed and arm, after a reproduction gate on the pooled R2.
-# Inputs:  Data/processed/model_frame_structured.parquet (via merge_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/per_year_primary_r2.csv
+# Purpose: Regenerate the primary single-lag four-arm XGBoost run and compute per-year (2021-2023)
+#          out-of-sample R2 next to the pooled values, per seed and arm.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/per_year_primary_r2.csv (160 rows, derived and regenerable)
 # Notes:
-# - Loads pipeline/20_seed_stability.py via importlib for merge_frame and the
-#   fit configuration. This script is itself loaded by pipeline/31, 31a, 31b,
-#   34, 35 and 47 (reference table, constants).
-# - Frame build and fit loop follow pipeline/26: sentiment and had_news are
-#   re-attached from the week-(t+1) key; folds are (train, val, test) =
-#   (2018-19, 2020, 2021), (2018-20, 2021, 2022), (2018-21, 2022, 2023), so
-#   test year == fold.
-# - R2 per GKX eq. 19 with an un-demeaned denominator: per year it uses that
-#   year's own sum(y^2); pooled is the ratio of the summed SSE and sum(y^2).
-# - Gate: every per-seed pooled R2 (40 seed x arm cells) must match the
-#   hard-coded reference within 2e-4 pp, else the run stops before any
-#   per-year number is printed. No per-year DM tests.
-# - The output CSV (160 rows: 10 seeds x 4 arms x pooled + 3 years) is derived
-#   and regenerable.
+# - Loads pipeline/20 via importlib; loaded by pipeline/31, 31a, 31b, 34, 35 and 47.
+# - Gate: all 40 seed x arm pooled R2 match the hard-coded reference within 2e-4 pp.
 
 import importlib.util
 import sys

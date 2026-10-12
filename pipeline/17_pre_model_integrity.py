@@ -1,21 +1,11 @@
 # %% 17_pre_model_integrity.py
-# Purpose: Build the predictive model frame from panel_final.parquet by attaching
-#          the week-(t+1) excess return as ret_excess_fwd, then scan the 30 model
-#          inputs for leakage and degeneracy. Runs no model.
+# Purpose: Build the predictive model frame (ret_excess_fwd = week t+1 excess return) from
+#          panel_final.parquet and scan the 30 model inputs for leakage and degeneracy. Runs no model.
 # Inputs:  Data/processed/panel_final.parquet
-# Outputs: Data/processed/model_frame_structured.parquet
-#          Data/processed/model_frame_structured_manifest.md
+# Outputs: Data/processed/model_frame_structured.parquet, Data/processed/model_frame_structured_manifest.md
 # Notes:
-# - panel_final.parquet is read-only; its SHA256, shape, columns and key
-#   uniqueness are verified before use, and a mismatch stops the run.
-# - The t -> t+1 pairing is a per-firm self-merge on a global week index built
-#   from the panel's own sorted anchors (the week definition is pipeline/08's);
-#   rows without a week-(t+1) firm-row are dropped, so gaps cannot pair wrongly.
-# - Hard integrity failures sys.exit; threshold checks are collected as [FLAG]
-#   and printed in the final summary rather than stopping the run.
-# - The |corr| > 0.10 leakage tripwire applies to the 22 characteristics only;
-#   macro predictors above it (svar) are reported as [INFO].
-# - The output and its manifest are derived and regenerable; the manifest text
+# - Gate: panel_final SHA256, shape, columns and key uniqueness; a mismatch stops the run.
+# - Hard integrity failures sys.exit; threshold checks print as [FLAG] in the summary.
 
 import hashlib
 import sys

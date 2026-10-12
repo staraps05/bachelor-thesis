@@ -1,26 +1,11 @@
 # %% 12_preprocess_freeze.py
-# Purpose: Rank-normalise the 22 characteristics (8 Block A + 14 Block B) week
-#   by week to [-1, +1], impute missing values with the cross-sectional median
-#   (0), validate, and write the final model panel plus its manifest.
-# Inputs:  Data/processed/panel_structured.parquet
-#          Data/membership_file.csv
-# Outputs: Data/processed/panel_final.parquet
-#          Data/processed/panel_final_manifest.md
+# Purpose: Rank-normalise the 22 characteristics week by week to [-1, +1], impute missing
+#          values with the cross-sectional median (0), validate, write panel + manifest.
+# Inputs:  Data/processed/panel_structured.parquet, Data/membership_file.csv
+# Outputs: Data/processed/panel_final.parquet, Data/processed/panel_final_manifest.md
 # Notes:
-# - Transform per (week_anchor, characteristic): rank the non-missing values
-#   across firms (ties: average), map rank r of n to 2*(r-1)/(n-1) - 1
-#   (n == 1 -> 0), then missing -> 0. Gu, Kelly & Xiu (2020) fn. 29-30, with
-#   the week as the period.
-# - Not transformed: ret_excess (stays a raw excess return), the 8 macro
-#   columns (constant across firms within a week; enter raw), n_days
-#   (diagnostic, not a feature) and the two keys. No winsorising, no row drops.
-# - panel_final.parquet is written before validation; the manifest only after
-#   every check passes. Both files then have their write bits stripped, and the
-#   script refuses to overwrite a read-only panel_final.parquet.
-# - TARGET_REF hard-codes the ret_excess mean/std/min/max the input must
-#   reproduce (taken from the pipeline/11 output).
-# - membership_file.csv is read only for tickers in the printed report.
-
+# - Writes panel, validates, then manifest; both chmod a-w; stops if panel is read-only.
+# - TARGET_REF hard-codes the ret_excess mean/std/min/max the input must reproduce.
 import hashlib
 import stat
 import sys

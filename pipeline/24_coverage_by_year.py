@@ -1,29 +1,11 @@
 # %% 24_coverage_by_year.py
-# Purpose: Ask whether the sentiment null is a news-coverage artefact: profile
-#          had_news coverage per year, then run the univariate OLS and quintile
-#          tests per year and scorer and for a high-coverage (2018-19) versus
-#          low-coverage (2021-23) pooled contrast.
-# Inputs:  Data/processed/model_frame_structured.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-#          Data/processed/scoring_input_coverage.csv
+# Purpose: Test whether the sentiment null is a news-coverage artefact: had_news coverage per year,
+#          univariate tests per year and scorer, and a high- (2018-19) vs low-coverage (2021-23) contrast.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet, Data/processed/scoring_input_coverage.csv
 # Outputs: prints only
 # Notes:
-# - verification/23_positive_control.py is loaded via importlib for
-#   merge_frame (taken from pipeline/20; reads and SHA-checks the frame and
-#   feature files), clustered_ols, quintile_spread, TARGET_T and SCORERS.
-# - Pairing is single-lag: the score at key t (headlines of the Mon-Sun window
-#   preceding anchor t) against ret_excess at key t (that week's return);
-#   ret_excess_fwd is not used.
-# - Tests run on had_news == 1 rows: OLS slope with week-clustered t, and
-#   weekly Q5-Q1 sorts (Q5 = highest score; weeks with < 20 firms skipped)
-#   with a NW lag-4 t. |t| >= 2.0 counts as significant.
-# - 2020 sits in neither pooled block because the FNSPID scrape horizon is per
-#   symbol (around June 2020). "Non-degraded" firms are those whose LOW-block
-#   had_news share is >= their HIGH-block share.
-# - Per-year cells rest on ~52 weeks each, so a single significant cell is
-#   weak evidence.
+# - Loads verification/23 via importlib (merge_frame from 20 SHA-checks inputs; tests).
+# - Single-lag pairing: score at key t vs ret_excess at key t; ret_excess_fwd is not used.
 
 import importlib.util
 import sys

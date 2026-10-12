@@ -1,18 +1,11 @@
 # %% 16a_export_for_colab.py
-# Purpose: Export the scoring input as a CSV for the Colab FinBERT notebook,
-#          adding a positional row id `hid` (0..796,037) that
-#          pipeline/16c_finbert_aggregate_freeze.py uses to join the scores back.
+# Purpose: Export scoring input as CSV for the Colab FinBERT notebook, plus row id hid.
 # Inputs:  Data/processed/scoring_input.parquet
 # Outputs: Data/colab/finbert_input.csv
 # Notes:
-# - hid is the row position in the parquet (sorted by PERMNO, target_week,
-#   headline_date); 16c rebuilds it the same way, so the parquet must not change.
-# - The scoring-input SHA256 and row count are checked against hard-coded
-#   constants before export.
-# - Stops if any headline contains a newline (unsafe for CSV transport).
-# - Next: upload the CSV to Drive, run Colab/16b_score_finbert.ipynb, download
-#   finbert_scores.csv into Data/colab/, then run 16c.
-
+# - hid = parquet row position (0..796,037); 16c rebuilds it; the parquet must not change.
+# - Scoring-input SHA256 and row count must match hard-coded constants before export.
+# - Then: Colab/16b_score_finbert.ipynb -> Data/colab/finbert_scores.csv -> pipeline 16c.
 import hashlib
 import sys
 from pathlib import Path

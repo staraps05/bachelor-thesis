@@ -1,28 +1,11 @@
 # %% 13_build_scoring_input.py
-# Purpose: Build the headline file that all three sentiment scorers (LM, FinBERT,
-#          FinGPT) consume: map FNSPID headlines to PERMNOs point-in-time, assign
-#          each to its target panel week, filter to the panel key set, clean,
-#          dedup and save. No scoring or aggregation happens here.
-# Inputs:  Data/processed/fnspid_headlines_2015_2023.csv
-#          Data/crsp_daily_prices.csv
-#          Data/processed/panel_final.parquet
-# Outputs: Data/processed/scoring_input.parquet
-#          Data/processed/scoring_input_coverage.csv
+# Purpose: Map FNSPID headlines to PERMNO and target week: input for LM, FinBERT, FinGPT.
+# Inputs:  Data/processed/fnspid_headlines_2015_2023.csv, Data/crsp_daily_prices.csv, Data/processed/panel_final.parquet
+# Outputs: Data/processed/scoring_input.parquet, Data/processed/scoring_input_coverage.csv
 # Notes:
-# - Ticker -> PERMNO: pd.merge_asof backward on CRSP daily (by ticker, tolerance
-#   5 calendar days); (ticker, day) pairs carrying 2+ PERMNOs are dropped, never
-#   guessed. The script stops if more than 0.5% of pairs are ambiguous.
-# - Headline-to-week rule: a headline dated in Mon-Sun calendar week W feeds the
-#   anchor of week W+1, i.e. target_week = week_anchor_map[Monday(d) + 7 days].
-#   The calendar date of the timestamp is used as given (no timezone shift).
-# - week_anchor_map is loaded from pipeline/08_build_skeleton.py via importlib so
-#   the week definition is not re-implemented.
-# - Cleaning: HTML entities decoded, whitespace collapsed, titles shorter than 3
-#   or longer than 500 chars dropped, exact duplicates within (PERMNO,
-#   headline_date) dropped keeping the first in file order. No lowercasing.
-# - The output is write-protected (chmod a-w) only when every check passes; the
-#   script stops if a write-protected output already exists.
-
+# - Loads week_anchor_map from pipeline/08_build_skeleton.py via importlib.
+# - Ambiguous (ticker, day) pairs are dropped, not guessed; stops if > 0.5% are ambiguous.
+# - Output is write-protected only when all checks pass; stops if a protected one exists.
 import hashlib
 import html
 import importlib.util

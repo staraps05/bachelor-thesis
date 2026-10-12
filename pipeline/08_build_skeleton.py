@@ -1,17 +1,11 @@
 # %% 08_build_skeleton.py
-# Purpose: Build the panel skeleton: one row per (PERMNO, week_anchor) for every week in
-#          2018-2023 on whose anchor day the firm is an S&P 500 member.
-# Inputs:  Data/membership_file.csv
-#          Data/crsp_daily_prices.csv (DlyCalDt only, for the trading-day calendar)
-#          Data/processed/sp500_permnos.txt (validation only)
-# Outputs: Data/processed/skeleton.parquet (columns: PERMNO int64, week_anchor date32)
+# Purpose: Skeleton: one (PERMNO, week_anchor) row per S&P 500 member-week, 2018-2023.
+# Inputs:  Data/membership_file.csv, Data/crsp_daily_prices.csv, Data/processed/sp500_permnos.txt
+# Outputs: Data/processed/skeleton.parquet
 # Notes:
-# - Week anchor = last trading day <= the week's Friday that lies within that Mon-Sun week; weeks with no trading day are skipped.
-# - week_anchor_map() is the single week definition of the pipeline; pipeline/09_build_target.py loads this file via importlib and reuses it instead of re-deriving weeks.
-# - MbrEndDt is treated as inclusive (checked against the daily member rows; ambiguous evidence aborts). NaT or beyond-window end dates count as still a member.
-# - Each membership spell contributes its own block of weeks, so re-entering firms get disjoint blocks.
-# - Failed hard checks abort with STOP; failed soft checks print FAIL and give exit status 1.
-
+# - week_anchor_map() is the single week definition; 09, 10 and 13 load it via importlib.
+# - MbrEndDt is treated as inclusive; ambiguous evidence in the daily member rows aborts.
+# - Failed hard checks abort with STOP; failed soft checks print FAIL and exit 1.
 import sys
 from datetime import date
 from pathlib import Path

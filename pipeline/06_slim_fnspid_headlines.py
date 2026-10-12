@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
 # 06_slim_fnspid_headlines.py
-# Purpose: Stream the raw FNSPID news CSV (~23 GB) in chunks and write a slim file holding
-#          only Date, Stock_symbol and Article_title for 2015-01-01..2023-12-31, all firms.
+# Purpose: Slim the ~23 GB FNSPID CSV to Date, Stock_symbol, Article_title, 2015-2023.
 # Inputs:  Data/fnspid_nasdaq_news_raw.csv
-# Outputs: Data/processed/fnspid_headlines_2015_2023.csv
-#          Data/processed/fnspid_headlines_2015_2023_TEST.csv (TEST_MODE only)
+# Outputs: Data/processed/fnspid_headlines_2015_2023.csv, Data/processed/fnspid_headlines_2015_2023_TEST.csv (TEST_MODE only)
 # Notes:
-# - Only the three needed columns are read (usecols) and the output is appended chunk by chunk, so memory stays flat.
-# - Dates are parsed tz-aware UTC; the window is the half-open [2015-01-01, 2024-01-01) so every 2023-12-31 timestamp is kept. Unparseable dates are dropped.
-# - TEST_MODE = True processes only TEST_CHUNKS chunks and writes the *_TEST file; the real output is untouched.
-# - Any existing output file is deleted before the run so appends cannot duplicate rows.
-# - on_bad_lines="warn": malformed rows are skipped with a warning; the three columns are mapped case-insensitively and the run stops if any cannot be found.
-
+# - Existing output is deleted first; malformed rows are skipped with a warning.
+# - TEST_MODE = True runs TEST_CHUNKS chunks into the *_TEST file; real output untouched.
 from pathlib import Path
 from collections import Counter
 import sys

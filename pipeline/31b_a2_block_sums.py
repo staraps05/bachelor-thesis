@@ -1,22 +1,12 @@
 # %% 31b_a2_block_sums.py
-# Purpose: Refit the A2 (FinBERT) arm of the primary single-lag specification
-#          (3 folds x 10 seeds) and print block sums of truncated total-gain
-#          shares: macro (8), characteristics (22), sentiment (5).
-# Inputs:  Data/processed/model_frame_structured.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
+# Purpose: Refit the A2 (FinBERT) arm of the primary single-lag spec (3 folds x 10 seeds); print block sums of truncated total-gain shares: macro (8), characteristics (22), sentiment (5).
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - pipeline/30_per_year_primary.py and pipeline/17_pre_model_integrity.py are
-#   loaded via importlib for merge_frame, the fit configuration, the per-seed
-#   reference R2 table and the characteristic/macro block lists.
-# - Same A2 fit loop as pipeline/31a; the refit must reproduce A2's ten
-#   per-seed pooled R2 values within GATE_TOL or the script stops.
-# - Importance = total-gain share from the booster truncated at
-#   best_iteration+1; block sums are taken per fold x seed cell, averaged over
-#   the 3 folds per seed, then mean and sd (ddof=1) across the 10 seeds.
+# - Loads pipeline/30 and pipeline/17 via importlib (fit config, reference R2, blocks).
+# - Gate: A2's ten per-seed pooled R2 must match the reference within GATE_TOL.
 # - The three block masks must partition the 35 inputs exactly.
+
 import importlib.util
 import sys
 from pathlib import Path

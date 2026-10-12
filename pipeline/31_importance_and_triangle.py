@@ -1,33 +1,12 @@
 # %% 31_importance_and_triangle.py
-# Purpose: Refit the primary single-lag XGBoost specification (4 arms x 3 folds
-#          x 10 seeds) and print the A0 feature-importance table, the
-#          sentiment-block importance share of each sentiment arm, and the
-#          headline-level cross-scorer correlation triangle with explicit
-#          Pearson/Spearman and row-set labels.
-# Inputs:  Data/processed/model_frame_structured.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-#          Data/processed/scoring_input.parquet
-#          Data/Loughran-McDonald_MasterDictionary_*.csv (last match by name)
-#          Data/colab/finbert_scores.csv
-#          Data/colab/fingpt_scores.csv
+# Purpose: Refit the primary single-lag XGBoost spec (4 arms x 3 folds x 10 seeds); print the A0 importance table, sentiment-block shares per arm and the cross-scorer correlation triangle.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet, Data/processed/scoring_input.parquet, Data/Loughran-McDonald_MasterDictionary_*.csv, Data/colab/finbert_scores.csv, Data/colab/fingpt_scores.csv
 # Outputs: prints only
 # Notes:
-# - pipeline/30_per_year_primary.py and pipeline/17_pre_model_integrity.py are
-#   loaded via importlib for merge_frame, the fit configuration, the per-seed
-#   reference R2 table and the characteristic/macro block lists.
-# - The refit must reproduce every seed x arm pooled R2 of the reference run
-#   within GATE_TOL; otherwise the script stops before reporting importances.
-# - Importance = total-gain share from the booster truncated at
-#   best_iteration+1 (the same trees the predictions use), averaged over the
-#   3 folds per seed, then mean and sd (ddof=1) across the 10 seeds. The
-#   untruncated A0 table is printed once for comparison; A0 has no sentiment
-#   columns, so its table holds for both lag alignments.
-# - Triangle: correlations of per-headline scores s (LM regenerated with the
-#   pipeline/15 convention; neural s = p_pos - p_neg joined on hid) for the
-#   three scorer pairs, on all headlines and on the LM-nonzero subset, both
-#   Pearson and Spearman; each value is compared with the recorded one.
+# - Loads pipeline/30 and pipeline/17 via importlib (fit config, reference R2, blocks).
+# - Gate: every seed x arm pooled R2 must match the reference within GATE_TOL, else stop.
+# - Triangle values are compared with the recorded ones (Pearson/Spearman, row-set labels)
+
 import hashlib
 import importlib.util
 import re

@@ -1,30 +1,11 @@
 # %% 26_single_lag_rerun.py
-# Purpose: Re-run the four XGBoost arms of pipeline/20 with sentiment attached
-#          at the single-lag horizon (headlines of week t -> return of week
-#          t+1) instead of the two-week gap of pipeline/19-21, and compare the
-#          10-seed results with the double-lag reference values.
-# Inputs:  Data/processed/model_frame_structured.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
+# Purpose: Re-run the four XGBoost arms of pipeline/20 with sentiment at the single-lag horizon
+#          (headlines of week t -> return of week t+1) and compare 10-seed results with the double-lag reference.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - pipeline/20_seed_stability.py is loaded via importlib for merge_frame
-#   (reads and SHA-checks the inputs), dm_test, the XGBoost configuration
-#   (FIXED_PARAMS with colsample_bytree 1.0, depth grid, round cap, early
-#   stopping), folds, seeds 42-51 and r2_oos. Nothing else changes.
-# - The feature files key sentiment at target_week t = headlines of the Mon-Sun
-#   window preceding t. The script drops the merged sentiment columns and
-#   re-merges each file on (PERMNO, week t+1) via the 313-anchor grid of the
-#   feature files; had_news moves with it. Structured features stay at week t
-#   and the target stays ret_excess_fwd.
-# - A0 (structured only) must reproduce the pipeline/20 per-seed pooled R2 to
-#   within 2e-4 pp on every seed; otherwise the script stops.
-# - Depth is chosen per arm, fold and seed on validation MSE; predictions use
-#   best_iteration + 1 rounds. DM tests apply dm_test (NW lag 4) to weekly
-#   mean squared errors; DM > 0 means the arm beats A0.
-# - Verdict per arm: a finding candidate when |mean delta R2 vs A0| across
-#   seeds exceeds the seed sd of that delta.
+# - Loads pipeline/20 via importlib (merge_frame with SHA checks, dm_test, fit config).
+# - Gate: A0 must reproduce the pipeline/20 per-seed pooled R2 within 2e-4 pp, else stop.
 
 import importlib.util
 import sys

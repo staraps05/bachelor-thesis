@@ -1,15 +1,11 @@
 # %% 30a_zero_delta_addendum.py
-# Purpose: Count how many of the 60 fold-2/3 cells (10 seeds x 3 sentiment arms
-#          x 2022/2023) in the per-year results have a delta vs A0 that is
-#          exactly 0.0 in float64, and list the non-zero ones in full precision.
+# Purpose: Count how many of the 60 fold-2/3 cells (10 seeds x 3 sentiment arms x 2022/2023) have a
+#          delta vs A0 that is exactly 0.0 in float64, and list the non-zero ones in full precision.
 # Inputs:  Data/processed/per_year_primary_r2.csv
 # Outputs: prints only
 # Notes:
 # - Reads the derived CSV written by pipeline/30 (160 rows expected).
-# - The check is at the R2 level only: a zero delta means the year's SSE ratio
-#   is bit-equal, not that the prediction vectors are bit-identical (pipeline/30
-#   keeps predictions in memory and does not persist them).
-# - Test year == fold by construction, so scopes "2022"/"2023" are folds 2/3.
+# - A zero delta means the year's R2 is bit-equal, not that predictions are identical.
 
 import sys
 from pathlib import Path

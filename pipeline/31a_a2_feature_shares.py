@@ -1,22 +1,12 @@
 # %% 31a_a2_feature_shares.py
-# Purpose: Refit the A2 (FinBERT) arm of the primary single-lag specification
-#          (3 folds x 10 seeds) and print per-feature truncated total-gain
-#          shares for the ten Table-4.2 features plus the sentiment-block sum.
-# Inputs:  Data/processed/model_frame_structured.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
+# Purpose: Refit the A2 (FinBERT) arm of the primary single-lag spec (3 folds x 10 seeds) and print
+#          per-feature truncated total-gain shares for the ten Table-4.2 features plus the sentiment-block sum.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - pipeline/30_per_year_primary.py is loaded via importlib for merge_frame,
-#   the fit configuration and the per-seed reference R2 table.
-# - Frame build and fit loop are those of pipeline/31 restricted to A2; the
-#   refit must reproduce A2's ten per-seed pooled R2 values within GATE_TOL or
-#   the script stops.
-# - Importance = total-gain share from the booster truncated at
-#   best_iteration+1; mean over the 3 folds per seed, then mean and sd
-#   (ddof=1) across the 10 seeds.
-# - The sentiment block = the five columns after the 30 structured inputs.
+# - Loads pipeline/30 via importlib (merge_frame, fit config, per-seed reference R2).
+# - Gate: A2's ten per-seed pooled R2 must match the reference within GATE_TOL.
+
 import importlib.util
 import sys
 from pathlib import Path

@@ -1,34 +1,11 @@
 # %% 19_four_arm_comparison.py
-# Purpose: Merge the three sentiment feature sets onto the model frame and run
-#          the four-arm comparison (A0 structured, A1 +LM, A2 +FinBERT,
-#          A3 +FinGPT) with the fit procedure of pipeline/18; reports pooled and
-#          per-year OOS R^2, Diebold-Mariano tests and sentiment-block importance.
-# Inputs:  Data/processed/model_frame_structured.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
-# Outputs: Data/processed/predictions_A0_structured.parquet
-#          Data/processed/predictions_A1_lm.parquet
-#          Data/processed/predictions_A2_finbert.parquet
-#          Data/processed/predictions_A3_fingpt.parquet
+# Purpose: Four-arm comparison (A0 structured, A1 +LM, A2 +FinBERT, A3 +FinGPT) with the pipeline/18 fit.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
+# Outputs: Data/processed/predictions_A0_structured.parquet, Data/processed/predictions_A1_lm.parquet, Data/processed/predictions_A2_finbert.parquet, Data/processed/predictions_A3_fingpt.parquet
 # Notes:
-# - The fit configuration (FIXED_PARAMS, DEPTH_GRID, NUM_ROUND_CAP, EARLY_STOP,
-#   FOLDS, SEED), the input lists and the frame path/SHA256 are loaded from
-#   pipeline/18_baseline_model.py via importlib; only the input list differs
-#   between arms. This script is in turn loaded by pipeline/20_seed_stability.py
-#   and verification/25_event_spot_check.py.
-# - The feature files are keyed on target_week, which is the panel week_anchor
-#   grid: sentiment at feature week t (headlines before anchor t) predicts
-#   ret_excess_fwd, the week-(t+1) excess return. Features are merged left m:1
-#   and not rank-normalised; had_news is identical across the three sets and
-#   enters the sentiment arms only.
-# - A0 must reproduce the pipeline/18 baseline (pooled R^2 and prediction-file
-#   SHA256 hard-coded below) or the script stops.
-# - DM test: GKX cross-sectional-average form on weekly mean squared errors,
-#   Newey-West lag 4, two-sided normal p-value. Primary: DM > 0 means the
-#   sentiment arm beats A0; pairwise: DM > 0 means the second arm is better.
-# - All four input SHA256s and shapes are checked; the script stops on mismatch
-#   or if a prediction output exists write-protected.
+# - Loads pipeline/18 via importlib (fit config); loaded by pipeline/20, verification/25.
+# - A0 must reproduce pipeline/18 (hard-coded pooled R^2, prediction SHA256) or it stops.
+# - All four input SHA256s/shapes checked; stops on mismatch or a write-protected output.
 
 import hashlib
 import importlib.util

@@ -1,28 +1,11 @@
 # %% 22_dispersion_vs_count.py
-# Purpose: Check whether the sentiment dispersion features (std, range, kurt)
-#          are just a proxy for the per-firm-week headline count, and whether
-#          the dispersion-return relation survives residualising on the count.
-# Inputs:  Data/processed/scoring_input.parquet
-#          Data/processed/scoring_input_coverage.csv
-#          Data/processed/model_frame_structured.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
+# Purpose: Check whether the dispersion features (std, range, kurt) proxy the headline count, and
+#          whether the dispersion-return relation survives residualising on the count.
+# Inputs:  Data/processed/scoring_input.parquet, Data/processed/scoring_input_coverage.csv, Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - pipeline/20_seed_stability.py is loaded via importlib for merge_frame
-#   (reads and SHA-checks the model frame and feature files), TARGET_FWD and
-#   YEARS.
-# - The stored count (scoring_input_coverage.csv) is recomputed from
-#   scoring_input.parquet and must match exactly; n == 1 rows must have
-#   std = range = kurt = 0 in all three arms. Any mismatch stops the run.
-# - Correlations use all had_news == 1 rows; the residual regressions use
-#   test rows 2021-23 with had_news == 1 (the pipeline/21 univariate sample),
-#   ret_excess_fwd as outcome and week-clustered t-statistics. kurt is left
-#   out of the residual step.
-# - Verdict per scorer: max |Spearman(count, std/range)| < 0.3 -> disagreement;
-#   0.3-0.6 -> count-attenuated; > 0.6, or a raw slope with |t| >= 1.96 that
-#   falls to |t| < 1 after residualising -> news volume.
+# - Loads pipeline/20 via importlib (merge_frame SHA-checks inputs, TARGET_FWD, YEARS).
+# - Stored count is recomputed from scoring_input.parquet and must match, else it stops.
 
 import hashlib
 import importlib.util

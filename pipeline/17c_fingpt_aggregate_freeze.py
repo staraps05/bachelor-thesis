@@ -1,28 +1,11 @@
 # %% 17c_fingpt_aggregate_freeze.py
-# Purpose: Gate the Colab-scored FinGPT probabilities, join them to the scoring
-#          input on hid, aggregate s = p_pos - p_neg to weekly moments through
-#          sentiment_aggregation, expand to the panel keys, validate, and write
-#          the FinGPT feature file (write-protected on a full pass).
-# Inputs:  Data/colab/fingpt_scores.csv
-#          Data/processed/scoring_input.parquet
-#          Data/processed/panel_final.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/colab/finbert_scores.csv
-#          Data/Loughran-McDonald_MasterDictionary_1993-2025.csv
+# Purpose: Gate the Colab-scored FinGPT probabilities and aggregate them to the FinGPT feature file.
+# Inputs:  Data/colab/fingpt_scores.csv, Data/processed/scoring_input.parquet, Data/processed/panel_final.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/colab/finbert_scores.csv, Data/Loughran-McDonald_MasterDictionary_1993-2025.csv
 # Outputs: Data/processed/features_fingpt.parquet
 # Notes:
-# - Imports pipeline/sentiment_aggregation.py and runs its unit tests first;
-#   the flow mirrors pipeline/16c (FinBERT arm).
-# - SHA256 of scoring_input, features_lm and features_finbert are checked
-#   against hard-coded values; any mismatch or failed hard gate stops the run.
-# - hid is the row position of scoring_input.parquet (pipeline/16a); the join
-#   is validated 1:1 and must leave no unmatched hid.
-# - No-news panel rows get 0 for all four moments and had_news = 0; had_news
-#   and key order must equal the LM and FinBERT arms exactly.
-# - The output is written even if a soft check fails (exit 1, left writable);
-#   it is chmod'd read-only only when every check passes. The LM recompute,
-#   FinBERT cross-correlations and distribution tables are report metrics.
+# - Imports pipeline/sentiment_aggregation.py (unit tests first); mirrors pipeline/16c.
+# - SHA256 gates on scoring_input, features_lm, features_finbert; failed hard gate stops.
+# - Output is written even on a soft-check failure (exit 1); read-only only on full pass.
 
 import hashlib
 import re

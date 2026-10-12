@@ -1,26 +1,11 @@
 # %% 11_merge_blockB_macro.py
-# Purpose: Merge the 14 pre-computed JKP monthly characteristics (Block B,
-#   forward-filled) and the 8 Welch-Goyal monthly macro predictors onto the
-#   Block-A panel. Lookups only: no computation, imputation, row drops or
-#   winsorising; NaNs are left for pipeline/12 to impute.
-# Inputs:  Data/processed/panel_blockA.parquet
-#          Data/Fundamentals.csv
-#          Data/Macro_data_aggregated.csv
-#          Data/membership_file.csv
+# Purpose: Merge Block B (14 JKP monthly) and 8 Welch-Goyal macro columns onto Block A.
+# Inputs:  Data/processed/panel_blockA.parquet, Data/Fundamentals.csv, Data/Macro_data_aggregated.csv, Data/membership_file.csv
 # Outputs: Data/processed/panel_structured.parquet
 # Notes:
-# - Block B: each (PERMNO, week_anchor) takes the JKP row with the most recent
-#   eom <= week_anchor (pd.merge_asof, backward), capped at 45 calendar days of
-#   staleness; beyond the cap the row gets NaN instead of a stale value. JKP
-#   rows from 2017-06 onward are loaded so the first 2018 anchors inherit one.
-# - Macro: a week anchored in calendar month m receives month m-1's values,
-#   identical across firms; tms and dfy are taken as given, not re-derived.
-# - Panel firms absent from JKP (REITs, foreign-incorporated) get NaN in all
-#   14 Block-B columns and are kept.
-# - Output has 34 columns: PERMNO, week_anchor, ret_excess, n_days, 8 Block A,
-#   14 Block B, 8 macro.
-# - membership_file.csv is read only for tickers in the printed report.
-
+# - Block B staleness is capped at 45 calendar days; beyond the cap the row gets NaN.
+# - Panel firms absent from JKP get NaN in all 14 Block-B columns and are kept.
+# - Lookups only, NaNs left for 12; 34 output columns; membership file for tickers only.
 import sys
 from pathlib import Path
 

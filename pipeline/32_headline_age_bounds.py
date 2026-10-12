@@ -1,22 +1,12 @@
 # %% 32_headline_age_bounds.py
-# Purpose: Bound the age of a headline at the time its target return is
-#          realised under the single-lag construction, on actual calendar
-#          dates, to check the chapter wording "one to twelve days".
-# Inputs:  Data/processed/scoring_input.parquet
-#          Data/processed/features_lm.parquet
-#          Data/F-F_Research_Data_Factors_daily.csv
+# Purpose: Bound the age of a headline when its target return is realised under the single-lag
+#          construction, on actual calendar dates, to check the chapter wording "one to twelve days".
+# Inputs:  Data/processed/scoring_input.parquet, Data/processed/features_lm.parquet, Data/F-F_Research_Data_Factors_daily.csv
 # Outputs: prints only
 # Notes:
-# - Headline window of key t+1 = Mon-Sun of the calendar week of anchor t;
-#   the target return runs over the trading days after anchor t through
-#   anchor t+1.
-# - Headline age is in calendar days. gap_a = latest headline (Sunday) to the
-#   first trading day after anchor t (minimum age); gap_b = earliest headline
-#   (Monday) to anchor t+1 (maximum age); both over all 312 consecutive
-#   anchor pairs.
-# - The scoring-input keying (every headline inside its key's Mon-Sun window)
-#   is re-verified first; the trading calendar is read from the FF daily file.
-# - The script stops on any violation.
+# - Re-verifies the scoring-input keying first; trading calendar from the FF daily file.
+# - Stops on any violation; bounds are taken over all 312 consecutive anchor pairs.
+
 import bisect
 import re
 import sys

@@ -1,27 +1,11 @@
 # %% 27_covered_subsample.py
-# Purpose: Re-run the four-arm single-lag XGBoost comparison on the subsample of
-#          firms whose news coverage is high in the test years, to ask whether
-#          sentiment predicts where headlines are actually observable.
-# Inputs:  Data/processed/model_frame_structured.parquet (via merge_frame)
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
+# Purpose: Re-run the four-arm single-lag XGBoost comparison on firms with high news coverage in the test years (had_news >= 60% of 2021-2023 weeks; 50%/70% robustness).
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - Loads pipeline/20_seed_stability.py via importlib for merge_frame, dm_test
-#   and the fit configuration (params, depth grid, folds, seeds, input lists).
-#   This script is itself loaded by pipeline/34-38, 40, 43-48 and
-#   verification/28 for single_lag_frame, fit_all and ARMS_DEF (the
-#   importer assigns ARMS_DEF itself); delta_stats is used only here.
-# - Single-lag frame: sentiment features and had_news are re-attached from the
-#   week-(t+1) key, as in pipeline/26.
-# - Firm filter: a firm qualifies when had_news >= 60% of its 2021-2023 weeks
-#   (robustness at 50% and 70%); all years of qualifying firms are kept.
-#   Selection uses coverage only, never returns.
-# - Per seed the |A0 pooled R2| must stay <= 0.05 or the run stops; A0 is not
-#   expected to match the full-panel value because the row set differs.
-# - Full-panel reference values (pooled R2, deltas, DM) are hard-coded from
-#   the pipeline/26 run log, verification/audit_block9_10/c5_code26_output.log.
+# - Loads pipeline/20 via importlib; loaded by pipeline/34-38, 40, 43-48, verification/28.
+# - Gate: per-seed |A0 pooled R2| <= 0.05 or stop (A0 need not match the full panel).
+# - Full-panel reference values from verification/audit_block9_10/c5_code26_output.log.
 
 import importlib.util
 import sys

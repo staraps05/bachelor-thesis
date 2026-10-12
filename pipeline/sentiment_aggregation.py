@@ -1,20 +1,11 @@
 # %% sentiment_aggregation.py
-# Purpose: Shared aggregation of per-headline sentiment scores to the weekly
-#          moment vector (mean, std, range, kurt) per (PERMNO, target_week);
-#          the single implementation used identically by the LM, FinBERT and
-#          FinGPT arms.
+# Purpose: Shared aggregation of per-headline sentiment scores to weekly moments (mean, std, range, kurt).
 # Inputs:  none
 # Outputs: prints only (unit-test results when run as a script)
 # Notes:
-# - Imported by pipeline/15, 16c and 17c; loaded via importlib by pipeline/29
-#   and 42. Importing has no side effects.
-# - Running this file as a script executes its unit tests; the scorer scripts
-#   call run_unit_tests() before scoring.
-# - Conventions: uniform weights; std is population (ddof=0); kurt is excess
-#   kurtosis from the centred two-pass fourth moment, set to 0 when the
-#   variance is below VAR_GUARD; n = 1 gives std = range = kurt = 0.
-# - Any change here changes every arm's features; the near-identical-pair unit
-#   test guards the kurtosis numerics (a raw-moment reconstruction fails it).
+# - Imported by pipeline/15, 16c, 17c; loaded via importlib by 29, 42; import-safe.
+# - Run as a script it executes the unit tests; scorers call run_unit_tests() first.
+# - Any change here changes every arm's features; near-identical-pair test guards kurt.
 
 import numpy as np
 import pandas as pd

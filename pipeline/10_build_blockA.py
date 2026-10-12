@@ -1,29 +1,11 @@
 # %% 10_build_blockA.py
-# Purpose: Compute the 8 price/return characteristics (ret_12_1, ret_6_1,
-#   ret_1_0, rvol_21d, ivol_ff3_21d, market_equity, dolvol_126d, ami_126d) from
-#   CRSP daily data, merge them onto the target panel, and cross-check them
-#   against JKP's month-end values (the "F6" table).
-# Inputs:  Data/processed/panel_target.parquet
-#          Data/processed/skeleton.parquet
-#          Data/crsp_daily_prices.csv
-#          Data/F-F_Research_Data_Factors_daily.csv
-#          Data/Fundamentals.csv
-# Outputs: Data/processed/panel_blockA.parquet
-#          Data/processed/f6_crosscheck.csv
+# Purpose: Compute the 8 Block-A price/return characteristics from CRSP daily data, merge
+#          onto the target panel and cross-check against JKP month-end values (F6 table).
+# Inputs:  Data/processed/panel_target.parquet, Data/processed/skeleton.parquet, Data/crsp_daily_prices.csv, Data/F-F_Research_Data_Factors_daily.csv, Data/Fundamentals.csv
+# Outputs: Data/processed/panel_blockA.parquet, Data/processed/f6_crosscheck.csv
 # Notes:
-# - Loads week_anchor_map from pipeline/08_build_skeleton.py via importlib, so
-#   08 must sit in the same directory as this file.
-# - Every rolling window is positional on the global CRSP trading-day calendar
-#   (2,264 days, 2015-2023): each firm's series is reindexed onto it and the
-#   firm's missing days count against the min-obs screens. The 2015-2017
-#   buffer is what gives the first 2018 anchors a 252-day lookback.
-# - Fama-French factors are divided by 100 once at load; every std uses ddof=1.
-# - RI = cumprod(1 + DlyRet) per firm from its first non-missing return;
-#   missing days carry RI forward. The longest intra-firm gap is reported,
-#   never used to reset RI.
-# - Both outputs are written before the JKP cross-check; if any characteristic
-#   falls below its Spearman threshold the script prints diagnostics and exits 1.
-
+# - Loads week_anchor_map from pipeline/08_build_skeleton.py via importlib (same dir).
+# - Both outputs are written before the JKP cross-check; a Spearman gate miss exits 1.
 import importlib.util
 import io
 import re

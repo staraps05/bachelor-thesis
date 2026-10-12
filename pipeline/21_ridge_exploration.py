@@ -1,29 +1,11 @@
 # %% 21_ridge_exploration.py
-# Purpose: Exploratory ridge-regression counterpart to the four XGBoost arms of
-#          pipeline/18-20: a model that keeps every feature, so the sentiment
-#          coefficients give a measured verdict instead of being ignored by
-#          early-stopped trees. Also runs unshrunken univariate checks of the
-#          three mean scores on the test rows.
-# Inputs:  Data/processed/model_frame_structured.parquet
-#          Data/processed/features_lm.parquet
-#          Data/processed/features_finbert.parquet
-#          Data/processed/features_fingpt.parquet
+# Purpose: Exploratory ridge-regression counterpart to the four XGBoost arms, plus univariate checks
+#          of the three mean scores on the test rows.
+# Inputs:  Data/processed/model_frame_structured.parquet, Data/processed/features_lm.parquet, Data/processed/features_finbert.parquet, Data/processed/features_fingpt.parquet
 # Outputs: prints only
 # Notes:
-# - pipeline/20_seed_stability.py is loaded via importlib for merge_frame
-#   (reads and SHA-checks the inputs above), dm_test, folds, input lists and
-#   r2_oos; nothing is re-declared here.
-# - Target is ret_excess_fwd (week t+1) with sentiment at key t, the double-lag
-#   pairing of pipeline/19-20; the single-lag rerun is pipeline/26.
-# - Inputs are z-scored with train-fold mean/sd (ddof=0) only; the target is
-#   not standardised. Ridge is closed form (numpy solve) with an unpenalised
-#   intercept, so there is no seed loop.
-# - Alpha grid {0.1, 1, 10, 100, 1000, 10000}, chosen per arm and fold on
-#   validation MSE; ties go to the smaller alpha. Test rows never enter the
-#   selection.
-# - Univariate checks: pooled OLS with week-clustered t, and weekly quintile
-#   sorts (Q5 = highest score) with a NW lag-4 t on the Q5-Q1 series, both on
-#   test rows 2021-23 with had_news == 1.
+# - Loads pipeline/20 via importlib: merge_frame (SHA-checks inputs), dm_test, folds.
+# - Double-lag pairing (ret_excess_fwd vs sentiment at key t); single-lag rerun is 26.
 
 import importlib.util
 import math
