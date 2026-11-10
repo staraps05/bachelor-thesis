@@ -322,8 +322,7 @@ def main() -> int:
         for f in FLAGS:
             print(f"    - {f}")
     else:
-        print("\n  Overall: PASS (all clear) - STOPPING here anyway; "
-              "Integrity checks complete. (stage gate).")
+        print("\n  Integrity checks complete.")
     return 0
 
 

@@ -253,11 +253,11 @@ def main() -> int:
 
     # Verification (in place): FLAG verdict
     if FLAGS:
-        print(f"\n  Verdict: FLAG ({len(FLAGS)}) - Baseline complete.:")
+        print(f"\n  Verdict: FLAG ({len(FLAGS)}).")
         for f in FLAGS:
             print(f"    - {f}")
     else:
-        print("\n  Verdict: PASS - audit clean, baseline plausible.")
+        print("\n  Verdict: PASS.")
     return 0
 
 
