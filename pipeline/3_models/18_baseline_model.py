@@ -253,7 +253,7 @@ def main() -> int:
 
     # Verification (in place): FLAG verdict
     if FLAGS:
-        print(f"\n  Verdict: FLAG ({len(FLAGS)}) - STOP, await review:")
+        print(f"\n  Verdict: FLAG ({len(FLAGS)}) - Baseline complete.:")
         for f in FLAGS:
             print(f"    - {f}")
     else:

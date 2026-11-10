@@ -10,7 +10,6 @@ Author: Ruben Stark. University of St. Gallen, 2026. Supervisor: Prof. Dr. Despo
 - `pipeline/2_sentiment/colab/`: the two GPU scoring notebooks (FinBERT, FinGPT) for Google Colab.
 - `verification/`: read-only checks of raw inputs and intermediate files; they print and write nothing except `verification/07`.
 - `archive/`: an early Colab pilot of the FinGPT scorer, not part of the pipeline.
-  - `archive/fingpt_sentiment_pilot.py`: Colab pilot of the FinGPT scorer; not part of the pipeline.
 - `results/`: the aggregate tables behind the thesis tables (CSV, no firm-level data); see Data below.
 
 ## Pipeline in run order
@@ -30,10 +29,10 @@ Data build (`pipeline/1_data_build/`)
 Sentiment scoring (`pipeline/2_sentiment/`)
 - `15_score_lm.py`: Loughran-McDonald scores and weekly moments (shared code in `sentiment_aggregation.py`).
 - `16a_export_for_colab.py`: export the headline table for the notebooks.
-- `colab/16b_score_finbert.ipynb` (in `2_sentiment/`, Colab GPU): FinBERT probabilities per headline.
+- `colab/16b_score_finbert.ipynb` (Colab GPU): FinBERT probabilities per headline.
 - `16c_finbert_aggregate_freeze.py`: validate the FinBERT scores and aggregate to weekly moments.
 - `verification/17a_export_for_colab.py`: confirm the export is unchanged before the FinGPT run.
-- `colab/17b_score_fingpt.ipynb` (in `2_sentiment/`, Colab GPU): FinGPT probabilities per headline (Llama-2-7B base, 4-bit).
+- `colab/17b_score_fingpt.ipynb` (Colab GPU): FinGPT probabilities per headline (Llama-2-7B base, 4-bit).
 - `17c_fingpt_aggregate_freeze.py`: validate the FinGPT scores and aggregate to weekly moments.
 
 Model frame and fits (`pipeline/3_models/`)

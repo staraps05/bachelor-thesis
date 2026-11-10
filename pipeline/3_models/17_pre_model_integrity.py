@@ -322,8 +322,8 @@ def main() -> int:
         for f in FLAGS:
             print(f"    - {f}")
     else:
-        print("\n  Overall: PASS (all clear) - STOPPING here anyway; baseline "
-              "model awaits explicit go (stage gate).")
+        print("\n  Overall: PASS (all clear) - STOPPING here anyway; "
+              "Integrity checks complete. (stage gate).")
     return 0
 
 
