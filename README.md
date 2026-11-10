@@ -61,7 +61,7 @@ Thesis tables (`pipeline/5_tables/`; each writes full-precision CSVs to `Data/pr
 - `39_numbers_ridge.py`, `45_numbers_ridge_singlelag.py`: Table C.2 ridge rows, Table C.3, Table C.4.
 - `41_numbers_modelfree_countcorr.py`, `46_numbers_modelfree_singlelag.py`: Table C.7 and Table C.5.
 - `42_numbers_daily_decay.py`: Table C.6.
-- `43_numbers_level_share.py`: Table C.8 (seed 42).
+- `43_numbers_level_share.py`: the level share (seed 42); not printed in the thesis.
 - `44_numbers_nonews_share.py`: the no-news share quoted in the text.
 - `40_numbers_a0prime_xgb.py`, `47_numbers_a0prime_r2delta.py` (hours): the A0 plus news-indicator check.
 - `48_numbers_sentiment_use_variants.py` (hours): sentiment gain share under two variants.
@@ -95,7 +95,7 @@ Derived files written by the pipeline into `Data/processed/`: `sp500_permnos.txt
 
 ## Software versions
 
-The pipeline ran with Python 3.9.6, pandas 2.2.3, numpy 2.0.2, pyarrow 21.0.0 and xgboost 2.1.4; the scripts import nothing else beyond the standard library (scikit-learn and statsmodels are not used). The notebooks pin only `pandas<2.3`; FinBERT uses `ProsusAI/finbert` via transformers, and FinGPT uses `NousResearch/Llama-2-7b-hf` with the `FinGPT/fingpt-mt_llama2-7b_lora` adapter, loaded in 4-bit through bitsandbytes with peft and accelerate at the versions Colab installed at run time. Seeds: 42 to 51 for the fits; seed 42 for Table C.8.
+The pipeline ran with Python 3.9.6, pandas 2.2.3, numpy 2.0.2, pyarrow 21.0.0 and xgboost 2.1.4; the scripts import nothing else beyond the standard library (scikit-learn and statsmodels are not used). The notebooks pin only `pandas<2.3`; FinBERT uses `ProsusAI/finbert` via transformers, and FinGPT uses `NousResearch/Llama-2-7b-hf` with the `FinGPT/fingpt-mt_llama2-7b_lora` adapter, loaded in 4-bit through bitsandbytes with peft and accelerate at the versions Colab installed at run time. Seeds: 42 to 51 for the fits; seed 42 for the level share (script 43).
 
 ## Reproducibility note
 
